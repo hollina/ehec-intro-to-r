@@ -1,0 +1,12 @@
+---
+title: "intro-to-r"
+author: "Alex Hollingsworth, Grant McDermott, and Kelli Marquardt"
+date: "7/7/2021"
+output: html_document
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
