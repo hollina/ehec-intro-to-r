@@ -3,8 +3,74 @@ title: "intro-to-r"
 author: "Alex Hollingsworth, Grant McDermott, and Kelli Marquardt"
 date: "7/7/2021"
 output: html_document
-    toc: true
 ---
+
+### Introduction 
+
+This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. 
+
+- If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
+- To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
+
+Basically all of the syntax like italics, headings, bold, citations is added using plain text and is "knit" into a formatted output. It's a bit like Latex in this regard. A nice feature of R-markdown is that you can output in a few different formats: html, pdf, rich text. You can also use a companion `.css` file that contains information on custom formatting preferences, which is especially helpful for html output.
+
+This document is about as vanilla as it gets. 
+
+### Simple example 
+
+In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. 
+
+I will also load the `dplyr` package (also a part of the `tidyverse`) so we can write some cleaner code using "pipes" (the `%>%` syntax). 
+
+```{r load-packages}
+library(ggplot2)
+library(dplyr)
+```
+
+Now that this is loaded into memory, we can begin to use it. Much like stata's auto dataset, many packages have pre-installed datasets that are useful for tutorials and debugging. 
+
+We can look at the first five observations using the `head` command
+
+```{r head-of-data} 
+head(diamonds)
+```
+
+We can get a list of column names fairly easily too
+
+```{r list-of-column-names}
+names(diamonds)
+```
+
+Let's compute the average price by color 
+
+```{r mean-price-by-color}
+diamonds %>% group_by(color) %>% summarise(mean(price)) 
+```
+
+Here the pipe command `%>%` will take the output from the command on the left and "pipe" it as input to the command on the right. So above we 
+
+1. take the dataset called diamonds 
+1. send it as input to the command `group_by`, which groups by the unique values in the column `color`
+1. We then send this grouped data to the `summarize` command, which calculates the mean price in each group. 
+
+Two things to note. First off, you can just move onto a new line without an error. This is neat because it allows us to write cleaner code and you don't need a delimiter or the `///` you may be used to from stata. So we can rewrite the above like this. 
+
+```{r mean-price-by-color-cleaner}
+diamonds %>% 
+    group_by(color) %>% 
+    summarize(mean(price)) 
+```
+
+Second, in more recent versions of R (4.1 and above), you don't need to have `dpylr` installed to pipe. You can do the same thing using `|>`. 
+
+```{r mean-price-by-color-new-pipe}
+diamonds |>
+    group_by(color) |>
+    summarize(mean(price)) 
+```
+
+Note: In this example, it's interchangeable, but it's not wholly interchangel. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more examples. 
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
