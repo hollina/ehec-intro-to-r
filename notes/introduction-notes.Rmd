@@ -19,9 +19,7 @@ Basically all of the syntax like italics, headings, bold, citations is added usi
 
 This document is about as vanilla as it gets. 
 
-## Simple example 
-
-### Load packages into memory 
+## Load packages into memory 
 
 In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. 
 
@@ -32,11 +30,11 @@ library(ggplot2)
 library(dplyr)
 ```
 
+## View data
+
 Now that this is loaded into memory, we can begin to use it. Much like stata's auto dataset, many packages have pre-installed datasets that are useful for tutorials and debugging. 
 
 We can look at the first five observations using the `head` command
-
-### View data
 
 ```{r head-of-data} 
 head(diamonds)
@@ -78,14 +76,40 @@ diamonds |>
 
 Note: In this example, `%>%` and `|>` are interchangeable, but the two are not interchangeable in all settings. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more details. 
 
-### Simple scatter plot
+#### Make summary statistics table. 
 
-Here we will use the `ggplot` function. You can learn more about any R function by typing in `?` before the function name (e.g., `?ggplot`).
+An annoying, but also powerful, feature of R is that there are 15 ways to accomplish any task. In general limiting the number of packages you use is a good idea since you won't build dependencies on code that could become outdated as base R and other packages are updated. That being said, the power of R is the ability to use fantastic user written packages. Here we will use `modelsummary`'s `datasummary` packages to make fantastic summary statistic plots. Otherwise we'd have to continue to do things like we did above, exploring the data and making summary tables on our own.  
+
+
+First, load the model summary package 
+```{r load-modelsummary}
+library(modelsummary)
+```
+
+
+Now we can use the `datasummary_skim` function. 
+
+```{r summary-table}
+datasummary_skim(diamonds)
+```
+
+But not every variable is numeric. `datasummary` has this covered with the `type = "categorical"` sub-option. 
+
+```{r summary-table-categorical}
+datasummary_skim(diamonds, type = "categorical")
+```
+
+Learn more about `datasummary` here: https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html 
+
+
+##  Graphing
+
+Next we will use the `ggplot` function. You can learn more about any R function by typing in `?` before the function name (e.g., `?ggplot`).
 
 - On the first line, we call the function, then clarify  the dataset we wish to use (referable to by its name, `diamonds`), the y-variable (`price`), and the x-variable (`carat`). 
 - On the second line, we clarify that we want the geometry to be points
 
-```{r}
+```{r ggplot-1}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point() 
 ```
@@ -94,7 +118,7 @@ Think changing graphic features in ggplot as adding layers. You can do this by r
 
 For example let's add a third line where use a default theme called classic that I like. 
 
-```{r}
+```{r ggplot-2}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point() +
     theme_classic()
@@ -102,14 +126,14 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 
 We can obtain the same result, by saving the above as an object and adding to it. 
 
-```{r}
+```{r ggplot-3}
 base_plot <- ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point()
 ```
 
 The `<-` arrow assigns the code after it to the name `base_plot` 
 
-```{r}
+```{r ggplot-4}
 base_plot +
     theme_classic()
 ```
@@ -121,14 +145,14 @@ All we need to do is add this theme line to the above.
 It's very simple to make complex plots in R. 
 
 We can add some transparency 
-```{r}
+```{r ggplot-5}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point(alpha = .33) +
     theme_classic()
 ```
 
 Customized labels and increased size of text
-```{r}
+```{r ggplot-6}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
     theme_classic() + 
@@ -141,7 +165,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 
 Recall that the data contain information on color. We can easily create small multiples of the same graph. 
 
-```{r}
+```{r ggplot-7}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
     facet_wrap(~color) +
@@ -152,8 +176,10 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           y = "", 
           x = "Carat")
 ```
+
 Similarly, we can add color based on clarity 
-```{r}
+
+```{r ggplot-8}
 ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
     geom_point(alpha = .33) +
     facet_wrap(~color) +
@@ -167,7 +193,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
 
 It's also trivial to add a regression line to each. We will pick method `lm`, which is a simple linear regression.
 
-```{r}
+```{r ggplot-9}
 ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
     geom_point(alpha = .33) +
     facet_wrap(~color) + 
@@ -182,7 +208,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
 
 We can even remove the points below by simply removing the second line
 
-```{r}
+```{r ggplot-10}
 ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
     facet_wrap(~color) + 
     geom_smooth(method = "lm") +
@@ -194,37 +220,34 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
           x = "Carat")
 ```
 
-Viewing the data this way, adds nuance to the earlier tabulation stats. D color diamonds are cheaper on average perhaps because they are smaller. Let's check on price by color, conditional on size. 
+We can use ggplot to create all sorts of cool graphics. See cool gallery with code here: http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html
 
-### Run a regression
+## Run regressions
 
 To do this we can use a few different methods. We will use `modelsummary` and `etable` (from fixest) to dispay the results
 
-####  Base R
+###  Base R
+
 The `lm` function
 
-```{r}
+```{r base-r-regression}
 base_model <- lm(price ~ carat, data = diamonds)
 ```
 
-Load model summary into memory 
-
-```{r}
-library(modelsummary)
-```
 
 Display the base_model using model summary 
 
-```{r}
+```{r base-r-display}
 modelsummary(base_model) 
 ```
 
 We can tweak this output to look a bit better. We will use the nice `kableExtra` package to help. 
-```{r}
+
+```{r load-kableExtra}
 library(kableExtra)
 ```
 
-```{r}
+```{r base-r-display-with-formatting}
 modelsummary(base_model,  
   title = "Fantastic regression table", 
   stars = TRUE,
@@ -238,12 +261,13 @@ modelsummary(base_model,
 
 Now we can run all sorts of other models and display them side-by-side. Let's add some controls 
 
-```{r}
+```{r base-r-reg-2}
 model_add_controls <- lm(price ~ carat + depth + table , data = diamonds)
 ```
 
 We can add this model to a list with the base model. We name each item here.
-```{r}
+
+```{r base-r-model-save}
 models <- list(
     "Base"  = base_model, 
     "Add Controls"  = model_add_controls
@@ -251,7 +275,8 @@ models <- list(
 ```
 
 We can use the same format as earlier. 
-```{r}
+
+```{r base-r-model-display-2}
 modelsummary(models,  
   title = "Fantastic regression table", 
   stars = TRUE,
@@ -263,21 +288,23 @@ modelsummary(models,
   threeparttable = TRUE)
 ```
 
+### Using `fixest`
+
 Next, we will use `fixest` to run a regression with fixed effects. 
 
-```{r}
+```{r load-fixest}
 library(fixest)
 ```
 
 The fixed effects are those after the `|` indicator. 
 
-```{r}
+```{r fixest-model}
 fe_model <- feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds)
 ```
 
 We can create a similar list as earlier. 
 
-```{r}
+```{r fixest-list}
 models <- list(
     "Base"  = base_model, 
     "Add Controls"  = model_add_controls,
@@ -285,7 +312,7 @@ models <- list(
 )
 ```
 
-```{r}
+```{r fixest-display}
 modelsummary(models,  
   title = "Fantastic regression table", 
   stars = TRUE,
@@ -301,7 +328,7 @@ See more html display options here, https://cran.r-project.org/web/packages/kabl
 
 Now we can export this to latex
 
-```{r}
+```{r fixest-export}
 modelsummary(models,  
   title = "Fantastic regression table", 
   stars = TRUE,
@@ -316,29 +343,15 @@ modelsummary(models,
 
 We can also use the `etable` function that is a part of `fixest` package. 
 
-```{r}
+```{r fixest-etable-load}
 models_for_etable <- list(
     "Fixed-Effects" = fe_model
 )
 ```
 
-```{r}
+```{r fixest-etable-display}
 etable(models_for_etable) %>%
     kbl(caption = "Fantastic regression table") %>%
     kable_styling(full_width = F)
 ```
 
-### Make a summary statistics table
-
-Part of the reason `modelsummary` is so good is that we can create summary statistics tables quite esaily with it. The `datasummary_skim` is quite nice
-```{r}
-datasummary_skim(diamonds)
-```
-
-But not every variable is numeric. `datasummary` has this covered. 
-
-```{r}
-datasummary_skim(diamonds, type="categorical")
-```
-
-Learn more about `datasummary` here: https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html 
