@@ -275,7 +275,7 @@ The fixed effects are those after the `|` indicator.
 fe_model <- feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds)
 ```
 
-Store these two models as a list 
+We can create a similar list as earlier. 
 
 ```{r}
 models <- list(
@@ -296,6 +296,23 @@ modelsummary(models,
   add_footnote("An important note.",
   threeparttable = TRUE)
 ```
+See more html display options here, https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
+
+
+Now we can export this to latex
+
+```{r}
+modelsummary(models,  
+  title = "Fantastic regression table", 
+  stars = TRUE,
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
+  coef_omit = c("(Intercept)"), 
+  coef_rename = c("carat" = "Carat", 
+                  "Num.Obs." = "N"), 
+  output = 'output/table.tex')
+```
+
+#### Table using `etable`
 
 We can also use the `etable` function that is a part of `fixest` package. 
 
@@ -308,6 +325,20 @@ models_for_etable <- list(
 ```{r}
 etable(models_for_etable) %>%
     kbl(caption = "Fantastic regression table") %>%
-    kable_styling()
+    kable_styling(full_width = F)
 ```
-See more options here, https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
+
+### Make a summary statistics table
+
+Part of the reason `modelsummary` is so good is that we can create summary statistics tables quite esaily with it. The `datasummary_skim` is quite nice
+```{r}
+datasummary_skim(diamonds)
+```
+
+But not every variable is numeric. `datasummary` has this covered. 
+
+```{r}
+datasummary_skim(diamonds, type="categorical")
+```
+
+Learn more about `datasummary` here: https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html 
