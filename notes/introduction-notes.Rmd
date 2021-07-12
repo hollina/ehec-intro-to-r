@@ -236,7 +236,34 @@ modelsummary(base_model,
   threeparttable = TRUE)
 ```
 
-Now we can run all sorts of other models and display them side-by-side. We will use `fixest` to run a regression with fixed effects. 
+Now we can run all sorts of other models and display them side-by-side. Let's add some controls 
+
+```{r}
+model_add_controls <- lm(price ~ carat + depth + table , data = diamonds)
+```
+
+We can add this model to a list with the base model. We name each item here.
+```{r}
+models <- list(
+    "Base"  = base_model, 
+    "Add Controls"  = model_add_controls
+    )
+```
+
+We can use the same format as earlier. 
+```{r}
+modelsummary(models,  
+  title = "Fantastic regression table", 
+  stars = TRUE,
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
+  coef_omit = c("(Intercept)"), 
+  coef_rename = c("carat" = "Carat", 
+                  "Num.Obs." = "N")) %>%
+  add_footnote("An important note.",
+  threeparttable = TRUE)
+```
+
+Next, we will use `fixest` to run a regression with fixed effects. 
 
 ```{r}
 library(fixest)
@@ -253,6 +280,7 @@ Store these two models as a list
 ```{r}
 models <- list(
     "Base"  = base_model, 
+    "Add Controls"  = model_add_controls,
     "Fixed-Effects" = fe_model
 )
 ```
@@ -268,9 +296,17 @@ modelsummary(models,
   add_footnote("An important note.",
   threeparttable = TRUE)
 ```
+
+We can also use the `etable` function that is a part of `fixest` package. 
+
 ```{r}
-etable(fe_model, 
-       col) %>%
+models_for_etable <- list(
+    "Fixed-Effects" = fe_model
+)
+```
+
+```{r}
+etable(models_for_etable) %>%
     kbl(caption = "Fantastic regression table") %>%
     kable_styling()
 ```

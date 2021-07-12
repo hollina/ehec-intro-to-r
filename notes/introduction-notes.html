@@ -467,6 +467,495 @@ F
 </tr>
 </tbody>
 </table>
+<p>We can tweak this output to look a bit better. We will use the nice <code>kableExtra</code> package to help.</p>
+<pre class="r"><code>library(kableExtra)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
+<pre class="r"><code>modelsummary(base_model,  
+  title = &quot;Fantastic regression table&quot;, 
+  stars = TRUE,
+  gof_omit = &quot;Adj|Pseudo|Log|AIC|BIC|F|R2&quot;, 
+  coef_omit = c(&quot;(Intercept)&quot;), 
+  coef_rename = c(&quot;carat&quot; = &quot;Carat&quot;, 
+                  &quot;Num.Obs.&quot; = &quot;N&quot;)) %&gt;%
+  add_footnote(&quot;An important note.&quot;,
+  threeparttable = TRUE)</code></pre>
+<pre><code>## Warning: In version 0.8.0 of the `modelsummary` package, the default significance markers produced by the `stars=TRUE` argument were changed to be consistent with R&#39;s defaults.
+## This warning is displayed once per session.</code></pre>
+<table style="NAborder-bottom: 0; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
+<caption>
+Fantastic regression table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Model 1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Carat
+</td>
+<td style="text-align:center;">
+7756.426***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(14.067)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+53940
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>a</sup> An important note.
+</td>
+</tr>
+</tfoot>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> + p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Now we can run all sorts of other models and display them side-by-side. Let’s add some controls</p>
+<pre class="r"><code>model_add_controls &lt;- lm(price ~ carat + depth + table , data = diamonds)</code></pre>
+<p>We can add this model to a list with the base model. We name each item here.</p>
+<pre class="r"><code>models &lt;- list(
+    &quot;Base&quot;  = base_model, 
+    &quot;Add Controls&quot;  = model_add_controls
+    )</code></pre>
+<p>We can use the same format as earlier.</p>
+<pre class="r"><code>modelsummary(models,  
+  title = &quot;Fantastic regression table&quot;, 
+  stars = TRUE,
+  gof_omit = &quot;Adj|Pseudo|Log|AIC|BIC|F|R2&quot;, 
+  coef_omit = c(&quot;(Intercept)&quot;), 
+  coef_rename = c(&quot;carat&quot; = &quot;Carat&quot;, 
+                  &quot;Num.Obs.&quot; = &quot;N&quot;)) %&gt;%
+  add_footnote(&quot;An important note.&quot;,
+  threeparttable = TRUE)</code></pre>
+<table style="NAborder-bottom: 0; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
+<caption>
+Fantastic regression table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Base
+</th>
+<th style="text-align:center;">
+Add Controls
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Carat
+</td>
+<td style="text-align:center;">
+7756.426***
+</td>
+<td style="text-align:center;">
+7858.771***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(14.067)
+</td>
+<td style="text-align:center;">
+(14.151)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+depth
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+-151.236***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(4.820)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+table
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+-104.473***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(3.141)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+53940
+</td>
+<td style="text-align:center;">
+53940
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>a</sup> An important note.
+</td>
+</tr>
+</tfoot>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> + p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001
+</td>
+</tr>
+</tfoot>
+</table>
+<p>Next, we will use <code>fixest</code> to run a regression with fixed effects.</p>
+<pre class="r"><code>library(fixest)</code></pre>
+<pre><code>## fixest 0.9.0, BREAKING changes! (Permanently remove this message with fixest_startup_msg(FALSE).) 
+## - In i():
+##     + the first two arguments have been swapped! Now it&#39;s i(factor_var, continuous_var) for interactions. 
+##     + argument &#39;drop&#39; has been removed (put everything in &#39;ref&#39; now).
+## - In feglm(): 
+##     + the default family becomes &#39;gaussian&#39; to be in line with glm(). Hence, for Poisson estimations, please use fepois() instead.</code></pre>
+<p>The fixed effects are those after the <code>|</code> indicator.</p>
+<pre class="r"><code>fe_model &lt;- feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds)</code></pre>
+<p>Store these two models as a list</p>
+<pre class="r"><code>models &lt;- list(
+    &quot;Base&quot;  = base_model, 
+    &quot;Add Controls&quot;  = model_add_controls,
+    &quot;Fixed-Effects&quot; = fe_model
+)</code></pre>
+<pre class="r"><code>modelsummary(models,  
+  title = &quot;Fantastic regression table&quot;, 
+  stars = TRUE,
+  gof_omit = &quot;Adj|Pseudo|Log|AIC|BIC|F|R2&quot;, 
+  coef_omit = c(&quot;(Intercept)&quot;), 
+  coef_rename = c(&quot;carat&quot; = &quot;Carat&quot;, 
+                  &quot;Num.Obs.&quot; = &quot;N&quot;)) %&gt;%
+  add_footnote(&quot;An important note.&quot;,
+  threeparttable = TRUE)</code></pre>
+<table style="NAborder-bottom: 0; width: auto !important; margin-left: auto; margin-right: auto;" class="table">
+<caption>
+Fantastic regression table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Base
+</th>
+<th style="text-align:center;">
+Add Controls
+</th>
+<th style="text-align:center;">
+Fixed-Effects
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Carat
+</td>
+<td style="text-align:center;">
+7756.426***
+</td>
+<td style="text-align:center;">
+7858.771***
+</td>
+<td style="text-align:center;">
+8895.194***
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+(14.067)
+</td>
+<td style="text-align:center;">
+(14.151)
+</td>
+<td style="text-align:center;">
+(283.956)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+depth
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+-151.236***
+</td>
+<td style="text-align:center;">
+-21.024*
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+(4.820)
+</td>
+<td style="text-align:center;">
+(6.770)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+table
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+-104.473***
+</td>
+<td style="text-align:center;">
+-24.803**
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(3.141)
+</td>
+<td style="text-align:center;box-shadow: 0px 1px">
+(4.298)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+53940
+</td>
+<td style="text-align:center;">
+53940
+</td>
+<td style="text-align:center;">
+53940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Std. Errors
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+Clustered (color)
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>a</sup> An important note.
+</td>
+</tr>
+</tfoot>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup> + p &lt; 0.1, * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001
+</td>
+</tr>
+</tfoot>
+</table>
+<p>We can also use the <code>etable</code> function that is a part of <code>fixest</code> package.</p>
+<pre class="r"><code>models_for_etable &lt;- list(
+    &quot;Fixed-Effects&quot; = fe_model
+)</code></pre>
+<pre class="r"><code>etable(models_for_etable) %&gt;%
+    kbl(caption = &quot;Fantastic regression table&quot;) %&gt;%
+    kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Fantastic regression table
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Fixed-Effects
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Dependent Var.:
+</td>
+<td style="text-align:left;">
+price
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+carat
+</td>
+<td style="text-align:left;">
+8,895.2*** (284.0)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+depth
+</td>
+<td style="text-align:left;">
+-21.02* (6.770)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+table
+</td>
+<td style="text-align:left;">
+-24.80** (4.298)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fixed-Effects:
+</td>
+<td style="text-align:left;">
+——————
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+color
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cut
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+clarity
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+_______________
+</td>
+<td style="text-align:left;">
+__________________
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+S.E.: Clustered
+</td>
+<td style="text-align:left;">
+by: color
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Observations
+</td>
+<td style="text-align:left;">
+53,940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2
+</td>
+<td style="text-align:left;">
+0.91605
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Within R2
+</td>
+<td style="text-align:left;">
+0.91014
+</td>
+</tr>
+</tbody>
+</table>
+<p>See more options here, <a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html" class="uri">https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html</a></p>
 </div>
 </div>
 </div>
