@@ -4,8 +4,11 @@ author: "Alex Hollingsworth, Grant McDermott, and Kelli Marquardt"
 date: "7/7/2021"
 output: html_document
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-### Introduction 
+## Introduction 
 
 This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. 
 
@@ -16,7 +19,9 @@ Basically all of the syntax like italics, headings, bold, citations is added usi
 
 This document is about as vanilla as it gets. 
 
-### Simple example 
+## Simple example 
+
+### Load packages into memory 
 
 In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. 
 
@@ -30,6 +35,8 @@ library(dplyr)
 Now that this is loaded into memory, we can begin to use it. Much like stata's auto dataset, many packages have pre-installed datasets that are useful for tutorials and debugging. 
 
 We can look at the first five observations using the `head` command
+
+### View data
 
 ```{r head-of-data} 
 head(diamonds)
@@ -69,10 +76,202 @@ diamonds |>
     summarize(mean(price)) 
 ```
 
-Note: In this example, it's interchangeable, but it's not wholly interchangel. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more examples. 
+Note: In this example, `%>%` and `|>` are interchangeable, but the two are not interchangeable in all settings. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more details. 
 
+### Simple scatter plot
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Here we will use the `ggplot` function. You can learn more about any R function by typing in `?` before the function name (e.g., `?ggplot`).
+
+- On the first line, we call the function, then clarify  the dataset we wish to use (referable to by its name, `diamonds`), the y-variable (`price`), and the x-variable (`carat`). 
+- On the second line, we clarify that we want the geometry to be points
+
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point() 
 ```
 
+Think changing graphic features in ggplot as adding layers. You can do this by repeating all of the same code. Or by saving the above as an object then adding to that object.
+
+For example let's add a third line where use a default theme called classic that I like. 
+
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point() +
+    theme_classic()
+```
+
+We can obtain the same result, by saving the above as an object and adding to it. 
+
+```{r}
+base_plot <- ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point()
+```
+
+The `<-` arrow assigns the code after it to the name `base_plot` 
+
+```{r}
+base_plot +
+    theme_classic()
+```
+
+All we need to do is add this theme line to the above. 
+
+### Deviations from simple scatter plot
+
+It's very simple to make complex plots in R. 
+
+We can add some transparency 
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .33) +
+    theme_classic()
+```
+
+Customized labels and increased size of text
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+    theme_classic() + 
+    theme(text = element_text(size = 18)) +
+    labs(title = "Larger diamonds cost more", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+
+Recall that the data contain information on color. We can easily create small multiples of the same graph. 
+
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+    facet_wrap(~color) +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+Similarly, we can add color based on clarity 
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
+    geom_point(alpha = .33) +
+    facet_wrap(~color) +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+
+It's also trivial to add a regression line to each. We will pick method `lm`, which is a simple linear regression.
+
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
+    geom_point(alpha = .33) +
+    facet_wrap(~color) + 
+    geom_smooth(method = "lm") +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+
+We can even remove the points below by simply removing the second line
+
+```{r}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
+    facet_wrap(~color) + 
+    geom_smooth(method = "lm") +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+
+Viewing the data this way, adds nuance to the earlier tabulation stats. D color diamonds are cheaper on average perhaps because they are smaller. Let's check on price by color, conditional on size. 
+
+### Run a regression
+
+To do this we can use a few different methods. We will use `modelsummary` and `etable` (from fixest) to dispay the results
+
+####  Base R
+The `lm` function
+
+```{r}
+base_model <- lm(price ~ carat, data = diamonds)
+```
+
+Load model summary into memory 
+
+```{r}
+library(modelsummary)
+```
+
+Display the base_model using model summary 
+
+```{r}
+modelsummary(base_model) 
+```
+
+We can tweak this output to look a bit better. We will use the nice `kableExtra` package to help. 
+```{r}
+library(kableExtra)
+```
+
+```{r}
+modelsummary(base_model,  
+  title = "Fantastic regression table", 
+  stars = TRUE,
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
+  coef_omit = c("(Intercept)"), 
+  coef_rename = c("carat" = "Carat", 
+                  "Num.Obs." = "N")) %>%
+  add_footnote("An important note.",
+  threeparttable = TRUE)
+```
+
+Now we can run all sorts of other models and display them side-by-side. We will use `fixest` to run a regression with fixed effects. 
+
+```{r}
+library(fixest)
+```
+
+The fixed effects are those after the `|` indicator. 
+
+```{r}
+fe_model <- feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds)
+```
+
+Store these two models as a list 
+
+```{r}
+models <- list(
+    "Base"  = base_model, 
+    "Fixed-Effects" = fe_model
+)
+```
+
+```{r}
+modelsummary(models,  
+  title = "Fantastic regression table", 
+  stars = TRUE,
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
+  coef_omit = c("(Intercept)"), 
+  coef_rename = c("carat" = "Carat", 
+                  "Num.Obs." = "N")) %>%
+  add_footnote("An important note.",
+  threeparttable = TRUE)
+```
+```{r}
+etable(fe_model, 
+       col) %>%
+    kbl(caption = "Fantastic regression table") %>%
+    kable_styling()
+```
+See more options here, https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
