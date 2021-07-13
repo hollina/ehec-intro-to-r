@@ -257,6 +257,14 @@ Indiana University | University of Oregon | Chicago FED<br>
 </ul>
 <p>Basically all of the syntax like italics, headings, bold, citations is added using plain text and is “knit” into a formatted output. It’s a bit like Latex in this regard. A nice feature of R-markdown is that you can output in a few different formats: html, pdf, rich text. You can also use a companion <code>.css</code> file that contains information on custom formatting preferences, which is especially helpful for html output.</p>
 <p>This document is about as vanilla as it gets.</p>
+<p>Behind the scenes, we are typing in “code-chunks” that get run by R. These code chunks are fenced in with the at the beginning and ending with .</p>
+<p>For example, this is a code chunk that will evaluate the command <code>sin(3)</code></p>
+<pre><code>```{r}
+sin(3)
+```</code></pre>
+<p>The output of this will appear as follows:</p>
+<pre><code>## [1] 0.14112</code></pre>
+<p>You can also create calculations inline for example <code>`r sin(3)`</code> will evaluate <code>sin(3)</code>. With output rendering like this 0.14112.</p>
 </div>
 <div id="load-packages-into-memory" class="section level2">
 <h2>Load packages into memory</h2>
@@ -1661,6 +1669,7 @@ Within R2
 </div>
 <div id="package-management" class="section level2">
 <h2>Package management</h2>
+<p>A key feature of R is that you’ll need to have packages installed and load them as needed. This can be painful to keep track of across machines and especially across coauthors. In addition to simply having the package installed, making sure you have the right <em>version</em> of the package is important.</p>
 <div id="pacman" class="section level3">
 <h3><code>pacman</code></h3>
 </div>
@@ -1673,8 +1682,102 @@ Within R2
 </div>
 <div id="running-stata-from-r" class="section level2">
 <h2>Running stata from R</h2>
-<div id="meta-running-stata-running-r-from-r" class="section level3">
-<h3>Meta: running stata running R from R</h3>
+<ul>
+<li>First you’ll need to make sure that you have stata on the computer you’re using.</li>
+<li>Second, you’ll need to install <code>Statamarkdown</code></li>
+</ul>
+<p>export PATH=/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp:$PATH</p>
+<pre class="r"><code>library(&quot;devtools&quot;)</code></pre>
+<pre><code>## Loading required package: usethis</code></pre>
+<pre class="r"><code>#install_github(&quot;hemken/Statamarkdown&quot;)
+library(&quot;Statamarkdown&quot;)</code></pre>
+<pre><code>## Stata found at /Applications/Stata//StataMP.app/Contents/MacOS/StataMP</code></pre>
+<pre><code>## The &#39;stata&#39; engine is ready to use.</code></pre>
+<p>Then you just need to type this code chunk.</p>
+<pre><code>```{stata}
+sysuse auto
+summarize
+```</code></pre>
+<p>which will result in the following output.</p>
+<pre><code>(1978 Automobile Data)
+
+    Variable |        Obs        Mean    Std. Dev.  
+&gt;      Min        Max
+-------------+--------------------------------------
+&gt; -------------------
+        make |          0
+       price |         74    6165.257    2949.496   
+&gt;     3291      15906
+         mpg |         74     21.2973    5.785503   
+&gt;       12         41
+       rep78 |         69    3.405797    .9899323   
+&gt;        1          5
+    headroom |         74    2.993243    .8459948   
+&gt;      1.5          5
+-------------+--------------------------------------
+&gt; -------------------
+       trunk |         74    13.75676    4.277404   
+&gt;        5         23
+      weight |         74    3019.459    777.1936   
+&gt;     1760       4840
+      length |         74    187.9324    22.26634   
+&gt;      142        233
+        turn |         74    39.64865    4.399354   
+&gt;       31         51
+displacement |         74    197.2973    91.83722   
+&gt;       79        425
+-------------+--------------------------------------
+&gt; -------------------
+  gear_ratio |         74    3.014865    .4562871   
+&gt;     2.19       3.89
+     foreign |         74    .2972973    .4601885   
+&gt;        0          1
+
+/Users/hollinal/Documents/GitHub/ehec-intro-to-r/not
+&gt; es</code></pre>
+<p>It’s possible to do this without the <code>Statamarkdown</code> package, but I struggeled to get it to work, possibly because I have Stata-MP. You can see this link for more details: <a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html</a> For more information on <code>Statamarkdown</code> see here: <a href="https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html" class="uri">https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html</a></p>
+<div id="meta-use-r-to-call-stata-to-call-r" class="section level3">
+<h3>Meta: Use R to call stata to call R</h3>
+<p>Say that you have an R-script called <code>test.R</code>. This test script just shows <code>sin(3)</code> and is saved in the same folder as this <code>.Rmd</code> file.</p>
+<pre><code>```{stata}
+shell /usr/local/bin/R --vanilla &lt;test.R
+```</code></pre>
+<pre><code>R version 4.1.0 (2021-05-18) -- &quot;Camp Pontanezen&quot;
+Copyright (C) 2021 The R Foundation for Statistical 
+&gt; Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARR
+&gt; ANTY.
+You are welcome to redistribute it under certain con
+&gt; ditions.
+Type &#39;license()&#39; or &#39;licence()&#39; for distribution det
+&gt; ails.
+
+  Natural language support but running in an English
+&gt;  locale
+
+R is a collaborative project with many contributors.
+Type &#39;contributors()&#39; for more information and
+&#39;citation()&#39; on how to cite R or R packages in publi
+&gt; cations.
+
+Type &#39;demo()&#39; for some demos, &#39;help()&#39; for on-line h
+&gt; elp, or
+&#39;help.start()&#39; for an HTML browser interface to help
+&gt; .
+Type &#39;q()&#39; to quit R.
+
+&gt; sin(3)
+[1] 0.14112
+&gt; </code></pre>
+</div>
+</div>
+<div id="misc.-tips" class="section level2">
+<h2>Misc. tips</h2>
+<div id="clear-memory" class="section level3">
+<h3>Clear memory</h3>
+<p>Using <code>rm(list = ls())</code> to clear the objects in memory (not loaded packages). As far as I know you need to restart R to clear out loaded packages, but I’m not 100% sure about this.</p>
 </div>
 </div>
 

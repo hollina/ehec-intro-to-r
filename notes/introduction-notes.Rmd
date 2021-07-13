@@ -25,6 +25,26 @@ Basically all of the syntax like italics, headings, bold, citations is added usi
 
 This document is about as vanilla as it gets. 
 
+Behind the scenes, we are typing in "code-chunks" that get run by R. These code chunks are fenced in with the at the beginning 
+and ending with . 
+
+For example, this is a code chunk that will evaluate the command  `sin(3)` 
+
+````
+```{r}`r ''`
+sin(3)
+```
+````
+
+The output of this will appear as follows:
+
+```{r echo = FALSE}
+sin(3)
+```
+
+You can also create calculations inline for example `` `r knitr::inline_expr("sin(3)")` `` will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
+
+
 ## Load packages into memory 
 
 In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. 
@@ -371,7 +391,7 @@ Note: See this excellent blog post by Patrick Baylis on how to "fine-tune" your 
 
 ## Package management
 
-A key feature of R is that you'll need to have packages installed and load them as needed. This can be painful to keep track of. 
+A key feature of R is that you'll need to have packages installed and load them as needed. This can be painful to keep track of across machines and especially across coauthors. In addition to simply having the package installed, making sure you have the right *version* of the package is important. 
 
 ### `pacman`
 
@@ -381,4 +401,55 @@ A key feature of R is that you'll need to have packages installed and load them 
 
 ## Running stata from R
 
-### Meta: running stata running R from R
+- First you'll need to make sure that you have stata on the computer you're using. 
+- Second, you'll need to install `Statamarkdown`
+
+export PATH=/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp:$PATH
+```{r load-devtools}
+library("devtools")
+```
+```{r setup-stata}
+#install_github("hemken/Statamarkdown")
+library("Statamarkdown")
+```
+
+Then you just need to type this code chunk.
+
+````
+```{stata}`r ''`
+sysuse auto
+summarize
+```
+````
+
+which will result in the following output. 
+
+```{stata, echo = FALSE}
+sysuse auto
+summarize
+pwd
+```
+
+It's possible to do this without the `Statamarkdown` package, but I struggeled to get it to work, possibly because I have Stata-MP. You can see this link for more details:  https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html For more information on `Statamarkdown` see here: https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html
+
+
+
+### Meta: Use R to call stata to call R
+
+Say that you have an R-script called `test.R`. This test script just shows `sin(3)` and is saved in the same folder as this `.Rmd` file. 
+
+````
+```{stata}`r ''`
+shell /usr/local/bin/R --vanilla <test.R
+```
+````
+
+```{stata, echo = FALSE}
+shell /usr/local/bin/R --vanilla <test.R
+```
+
+## Misc. tips
+
+### Clear memory
+
+Using  `rm(list = ls())` to clear the objects in memory (not loaded packages). As far as I know you need to restart R to clear out loaded packages, but I'm not 100% sure about this. 
