@@ -250,14 +250,20 @@ Indiana University | University of Oregon | Chicago FED<br>
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This is an R-Markdown document. It’s a combination of text that is formatted using markdown syntax, R code, and results from running R code.</p>
+<div id="what-is-r-markdown" class="section level3">
+<h3>What is R-Markdown</h3>
+<p>This is an R-Markdown document. It’s a combination of text that is formatted using markdown syntax, R code, and results from running R code. It’s saved as an <code>.Rmd</code> file. You can also write <code>.R</code> code that is analagous to a <code>.do</code> file where there’s a list of commands with comments.</p>
 <ul>
 <li>If you are curious about markdown formatting, you can check out this handy guide. <a href="https://www.markdownguide.org/basic-syntax/" class="uri">https://www.markdownguide.org/basic-syntax/</a></li>
 <li>To learn more about R-Markdown, this “cheat-sheet” <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a>, is a good starting place.</li>
 </ul>
 <p>Basically all of the syntax like italics, headings, bold, citations is added using plain text and is “knit” into a formatted output. It’s a bit like Latex in this regard. A nice feature of R-markdown is that you can output in a few different formats: html, pdf, rich text. You can also use a companion <code>.css</code> file that contains information on custom formatting preferences, which is especially helpful for html output.</p>
+<p>Note: Comments in <code>.R</code> files are done with the <code>#</code> character. <code>.Rmd</code> files are mardown files so the <code>#</code> command will create a heading. To make comments in <code>.Rmd</code> files you can use html comment syntax <code>&lt;!––</code> to start the comment and <code>––&gt;</code> to end it.</p>
 <p>This document is about as vanilla as it gets.</p>
-<p>Behind the scenes, we are typing in “code-chunks” that get run by R. These code chunks are fenced in with the at the beginning and ending with .</p>
+</div>
+<div id="send-commands-to-r-in-r-markdown" class="section level3">
+<h3>Send commands to R in R-Markdown</h3>
+<p>Behind the scenes, in the <code>.Rmd</code> document we are typing in “code-chunks” that get run by R. These code chunks are fenced in with the at the beginning and ending with .</p>
 <p>For example, this is a code chunk that will evaluate the command <code>sin(3)</code></p>
 <pre><code>```{r}
 sin(3)
@@ -266,9 +272,10 @@ sin(3)
 <pre><code>## [1] 0.14112</code></pre>
 <p>You can also create calculations inline for example <code>`r sin(3)`</code> will evaluate <code>sin(3)</code>. With output rendering like this 0.14112.</p>
 </div>
+</div>
 <div id="load-packages-into-memory" class="section level2">
 <h2>Load packages into memory</h2>
-<p>In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the <code>ggplot2</code> package, which is an excellent graphics package. <code>gg</code> here stands for “grammar of graphics”. This is a part of the <code>tidyverse</code> you may have heard of.</p>
+<p>In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the <code>ggplot2</code> package, which is an excellent graphics package. <code>gg</code> here stands for “grammar of graphics”. This is a part of the <code>tidyverse</code> you may have heard of. Later we will cover how to manage packages.</p>
 <p>I will also load the <code>dplyr</code> package (also a part of the <code>tidyverse</code>) so we can write some cleaner code using “pipes” (the <code>%&gt;%</code> syntax).</p>
 <pre class="r"><code>library(ggplot2)
 library(dplyr)</code></pre>
@@ -280,6 +287,7 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
+<p>You can install packages using the <code>install.packages()</code> syntax, but see the section on <code>pacman</code> below before worrying about that.</p>
 </div>
 <div id="view-data" class="section level2">
 <h2>View data</h2>
@@ -1672,12 +1680,22 @@ Within R2
 <p>A key feature of R is that you’ll need to have packages installed and load them as needed. This can be painful to keep track of across machines and especially across coauthors. In addition to simply having the package installed, making sure you have the right <em>version</em> of the package is important.</p>
 <div id="pacman" class="section level3">
 <h3><code>pacman</code></h3>
+<p><code>pacman</code> is a fantastically named package manager, it can handle both packages on CRAN and packages stored only on places like github. The <code>p_load</code> function will include the library if you have it and install it and include it if you do not. For this code chunk I have it set to not evaluate since we previously included many of these libraries.</p>
+<p>At the beginning of your R-script or <code>.Rmd</code> file, you can include something like this.</p>
+<p>Make sure you have a place set to download packages from</p>
+<pre class="r"><code>options(repos = c(RSPM = &quot;https://packagemanager.rstudio.com/all/latest&quot;))</code></pre>
+<p>Then run this code (modfidied for the packages you want)</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(
+  ggplot2, dplyr, modelsummary, kableExtra, fixest, devtools
+)
+pacman::p_load_gh(&quot;hemken/Statamarkdown&quot;)</code></pre>
+<p>This will install <code>pacman</code> if it’s not currently installed. This code also introduces us to some other coding in R. You can call a function from a package using the <code>::</code> syntax where the package name is on the left and the function name on the right. This is helpful if there are two packages that have the same function name (e.g., this happens with the <code>select</code> function sometimes).</p>
 </div>
 <div id="renv" class="section level3">
 <h3><code>renv</code></h3>
-</div>
-<div id="devtools" class="section level3">
-<h3><code>devtools</code></h3>
+<p><code>renv</code> helps make sure that differences in package versions won’t prevent you from being able to replicate your results. Essentially it stores the exact version of each package you are using in a lock file. It makes it easy for another person (or future you) to use the exact same version of each package. It saves these in a <code>renv.lock</code> file. Once you’ve installed <code>renv</code> and you’ve opened up a new R-project, just type <code>renv::init()</code> and you should be good to go. <code>renv::snapshot()</code> will update changes.</p>
+<p>You can read more about <code>renv</code> here: <a href="https://rstudio.github.io/renv/articles/renv.html" class="uri">https://rstudio.github.io/renv/articles/renv.html</a></p>
 </div>
 </div>
 <div id="running-stata-from-r" class="section level2">
@@ -1686,11 +1704,11 @@ Within R2
 <li>First you’ll need to make sure that you have stata on the computer you’re using.</li>
 <li>Second, you’ll need to install <code>Statamarkdown</code></li>
 </ul>
-<p>export PATH=/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp:$PATH</p>
-<pre class="r"><code>library(&quot;devtools&quot;)</code></pre>
-<pre><code>## Loading required package: usethis</code></pre>
-<pre class="r"><code>#install_github(&quot;hemken/Statamarkdown&quot;)
-library(&quot;Statamarkdown&quot;)</code></pre>
+<p>Here you’d load the package <code>devtools</code>, this allows you to install packages from github. If you’re using <code>pacman</code> the <code>p_load_gh</code> function is a great way to load these packages. Then I’ll install the <code>Statamarkdown</code> package. Again, not needed if you’ve done this using <code>pacman</code> so I’ve set this code chunk to only show the code and not run it.</p>
+<pre class="r"><code>library(&quot;devtools&quot;)
+install_github(&quot;hemken/Statamarkdown&quot;)</code></pre>
+<p>Load the package <code>Statamarkdown</code>, again not needed if using <code>pacman</code>.</p>
+<pre class="r"><code>library(&quot;Statamarkdown&quot;)</code></pre>
 <pre><code>## Stata found at /Applications/Stata//StataMP.app/Contents/MacOS/StataMP</code></pre>
 <pre><code>## The &#39;stata&#39; engine is ready to use.</code></pre>
 <p>Then you just need to type this code chunk.</p>

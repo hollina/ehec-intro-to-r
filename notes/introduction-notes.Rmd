@@ -16,16 +16,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
-This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. 
+### What is R-Markdown
+
+This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. It's saved as an `.Rmd` file. You can also write `.R` code that is analagous to a `.do` file where there's a list of commands with comments. 
 
 - If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
 - To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
 
 Basically all of the syntax like italics, headings, bold, citations is added using plain text and is "knit" into a formatted output. It's a bit like Latex in this regard. A nice feature of R-markdown is that you can output in a few different formats: html, pdf, rich text. You can also use a companion `.css` file that contains information on custom formatting preferences, which is especially helpful for html output.
 
+Note: Comments in `.R` files are done with the `#` character. `.Rmd` files are mardown files so the `#` command will create a heading. To make comments in `.Rmd` files you can use html comment syntax `<!––` to start the comment and `––>` to end it. 
+
 This document is about as vanilla as it gets. 
 
-Behind the scenes, we are typing in "code-chunks" that get run by R. These code chunks are fenced in with the at the beginning 
+### Send commands to R in R-Markdown 
+
+Behind the scenes, in the `.Rmd` document we are typing in "code-chunks" that get run by R. These code chunks are fenced in with the at the beginning 
 and ending with . 
 
 For example, this is a code chunk that will evaluate the command  `sin(3)` 
@@ -47,7 +53,7 @@ You can also create calculations inline for example `` `r knitr::inline_expr("si
 
 ## Load packages into memory 
 
-In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. 
+In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. Later we will cover how to manage packages. 
 
 I will also load the `dplyr` package (also a part of the `tidyverse`) so we can write some cleaner code using "pipes" (the `%>%` syntax). 
 
@@ -55,6 +61,8 @@ I will also load the `dplyr` package (also a part of the `tidyverse`) so we can 
 library(ggplot2)
 library(dplyr)
 ```
+
+You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
 
 ## View data
 
@@ -395,21 +403,47 @@ A key feature of R is that you'll need to have packages installed and load them 
 
 ### `pacman`
 
+`pacman` is a fantastically named package manager, it can handle both packages on CRAN and packages stored only on places like github. The `p_load` function will include the library if you have it and install it and include it if you do not. For this code chunk I have it set to not evaluate since we previously included many of these libraries.
+
+At the beginning of your R-script or `.Rmd` file, you can include something like this. 
+
+Make sure you have a place set to download packages from
+```{r}
+options(repos = c(RSPM = "https://packagemanager.rstudio.com/all/latest"))
+```
+
+Then run this code (modfidied for the packages you want)
+```{r, eval = FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  ggplot2, dplyr, modelsummary, kableExtra, fixest, devtools
+)
+pacman::p_load_gh("hemken/Statamarkdown")
+```
+
+This will install `pacman` if it's not currently installed. This code also introduces us to some other coding in R. You can call a function from a package using the `::` syntax where the package name is on the left and the function name on the right. This is helpful if there are two packages that have the same function name (e.g., this happens with the `select` function sometimes).
+
 ### `renv`
 
-### `devtools`
+`renv` helps make sure that differences in package versions won't prevent you from being able to replicate your results. Essentially it stores the exact version of each package you are using in a lock file. It makes it easy for another person (or future you) to use the exact same version of each package. It saves these in a `renv.lock` file.  Once you've installed `renv` and you've opened up a new R-project, just type `renv::init()` and you should be good to go. `renv::snapshot()` will update changes. 
+
+You can read more about `renv` here: https://rstudio.github.io/renv/articles/renv.html
 
 ## Running stata from R
 
 - First you'll need to make sure that you have stata on the computer you're using. 
 - Second, you'll need to install `Statamarkdown`
 
-export PATH=/Applications/Stata/StataMP.app/Contents/MacOS/stata-mp:$PATH
-```{r load-devtools}
+Here you'd load the package `devtools`, this allows you to install packages from github. If you're using `pacman` the `p_load_gh` function is a great way to load these packages. Then I'll install the `Statamarkdown` package. Again, not needed if you've done this using `pacman` so I've set this code chunk to only show the code and not run it.
+
+```{r load-devtools, eval = FALSE}
 library("devtools")
+install_github("hemken/Statamarkdown")
 ```
+
+Load the package `Statamarkdown`, again not needed if using `pacman`.
+
 ```{r setup-stata}
-#install_github("hemken/Statamarkdown")
 library("Statamarkdown")
 ```
 
