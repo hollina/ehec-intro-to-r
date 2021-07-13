@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### What is R-Markdown
 
-This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. It's saved as an `.Rmd` file. You can also write `.R` code that is analagous to a `.do` file where there's a list of commands with comments. 
+This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. It's saved as an `.Rmd` file. You can also write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. 
 
 - If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
 - To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
