@@ -1,8 +1,14 @@
 ---
-title: "intro-to-r"
-author: "Alex Hollingsworth, Grant McDermott, and Kelli Marquardt"
-date: "7/7/2021"
-output: html_document
+title: EHEC, Introduction to R
+author:
+    name: Alex Hollingsworth, Grant McDermott, and Kelli Marquardt
+    affiliation: Indiana University | University of Oregon | Chicago FED
+    date: "`r format(Sys.time(), '%d %B %Y')`" ## Or "Lecture no."
+output: 
+    html_document:
+        toc: yes
+        toc_depth: 4
+        toc_float: yes
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -52,7 +58,7 @@ Let's compute the average price by color
 diamonds %>% group_by(color) %>% summarise(mean(price)) 
 ```
 
-Here the pipe command `%>%` will take the output from the command on the left and "pipe" it as input to the command on the right. So above we 
+Here the pipe command `%>%` will take the output from the command on the left and "pipes" it as input to the command on the right. So above we 
 
 1. take the dataset called diamonds 
 1. send it as input to the command `group_by`, which groups by the unique values in the column `color`
@@ -127,24 +133,25 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 We can obtain the same result, by saving the above as an object and adding to it. 
 
 ```{r ggplot-3}
-base_plot <- ggplot(data = diamonds, aes(y = price, x = carat)) +
+base_plot = ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point()
 ```
 
-The `<-` arrow assigns the code after it to the name `base_plot` 
+You can also use the `<-` arrow instead of the `=` to the name `base_plot` 
 
 ```{r ggplot-4}
 base_plot +
     theme_classic()
 ```
 
-All we need to do is add this theme line to the above. 
+All we need to do is add this theme line `theme_classic()` to the above. 
 
 ### Deviations from simple scatter plot
 
 It's very simple to make complex plots in R. 
 
 We can add some transparency 
+
 ```{r ggplot-5}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point(alpha = .33) +
@@ -152,6 +159,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ```
 
 Customized labels and increased size of text
+
 ```{r ggplot-6}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
@@ -163,7 +171,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           x = "Carat")
 ```
 
-Recall that the data contain information on color. We can easily create small multiples of the same graph. 
+Recall that the data contain information on diamond color. We can easily create small multiples of the scatter plot for each color. 
 
 ```{r ggplot-7}
 ggplot(data = diamonds, aes(y = price, x = carat)) +
@@ -177,7 +185,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           x = "Carat")
 ```
 
-Similarly, we can add color based on clarity 
+Similarly, we can add color (or shapes) based on diamond clarity 
 
 ```{r ggplot-8}
 ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
@@ -224,14 +232,14 @@ We can use ggplot to create all sorts of cool graphics. See cool gallery with co
 
 ## Run regressions
 
-To do this we can use a few different methods. We will use `modelsummary` and `etable` (from fixest) to dispay the results
+To do this we can use a few different methods. We will use `modelsummary` and `etable` (from `fixest` package) to display the results
 
 ###  Base R
 
 The `lm` function
 
 ```{r base-r-regression}
-base_model <- lm(price ~ carat, data = diamonds)
+base_model = lm(price ~ carat, data = diamonds)
 ```
 
 
@@ -262,13 +270,13 @@ modelsummary(base_model,
 Now we can run all sorts of other models and display them side-by-side. Let's add some controls 
 
 ```{r base-r-reg-2}
-model_add_controls <- lm(price ~ carat + depth + table , data = diamonds)
+model_add_controls = lm(price ~ carat + depth + table , data = diamonds)
 ```
 
 We can add this model to a list with the base model. We name each item here.
 
 ```{r base-r-model-save}
-models <- list(
+models = list(
     "Base"  = base_model, 
     "Add Controls"  = model_add_controls
     )
@@ -296,16 +304,19 @@ Next, we will use `fixest` to run a regression with fixed effects.
 library(fixest)
 ```
 
-The fixed effects are those after the `|` indicator. 
+The fixed effects are those after the `|` symbol. 
 
 ```{r fixest-model}
-fe_model <- feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds)
+fe_model = feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds, cluster = c("color"))
 ```
+
+Note: Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://cran.r-project.org/web/packages/fixest/vignettes/standard_errors.html
+
 
 We can create a similar list as earlier. 
 
 ```{r fixest-list}
-models <- list(
+models = list(
     "Base"  = base_model, 
     "Add Controls"  = model_add_controls,
     "Fixed-Effects" = fe_model
@@ -344,7 +355,7 @@ modelsummary(models,
 We can also use the `etable` function that is a part of `fixest` package. 
 
 ```{r fixest-etable-load}
-models_for_etable <- list(
+models_for_etable = list(
     "Fixed-Effects" = fe_model
 )
 ```
@@ -355,3 +366,19 @@ etable(models_for_etable) %>%
     kable_styling(full_width = F)
 ```
 
+Note: See this excellent blog post by Patrick Baylis on how to "fine-tune" your tables using `etable` for latex export. It's quite simple to do, but will require a bit of time perfecting it to your exact liking. While it's outside the scope of this presentation, it's some hard earned knowledge he's sharing that should make your life easier. https://www.patrickbaylis.com/blog/2021-05-30-making-tables/
+
+
+## Package management
+
+A key feature of R is that you'll need to have packages installed and load them as needed. This can be painful to keep track of. 
+
+### `pacman`
+
+### `renv`
+
+### `devtools`
+
+## Running stata from R
+
+### Meta: running stata running R from R
