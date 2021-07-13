@@ -20,6 +20,12 @@ class: center, middle, inverse, title-slide
 
 ---
 
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 25px;
+    padding: 1em 4em 1em 4em;
+}
+&lt;/style&gt;
 # This document was made using R-Markdown.
 
 - R-Markdown is great because you can combine text with R code and results. 
@@ -29,7 +35,7 @@ class: center, middle, inverse, title-slide
 
 - You can also just simply write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. No need for this fancy `.Rmd` Markdown business. 
 
-- But it's pretty cool to integrate code with results right in the presentation. 
+- But it's pretty cool to integrate code with results right into the presentation. 
 
 
 ```r
@@ -42,19 +48,27 @@ sin(3)
 
 ---
 
+# Learn more about R-Markdown
 
-```r
-sin(3)
-```
-
-```
-[1] 0.14112
-```
 - If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
+
 - To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
 
-
 ---
+# Code Chunks
+
+This is a code chunk that will evaluate the command  `sin(3)` 
+
+
+
+The output of tis will appear as follows:
+
+
+```
+[1] 0.14112
+```
+
+You can also create calculations inline for example `` `r sin(3)` `` will evaluate `sin(3)`. With output rendering like this 0.14112.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
