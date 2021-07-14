@@ -64,15 +64,64 @@ Now we can use the `datasummary_skim` function.
 ```{r summary-table}
 datasummary_skim(diamonds)
 ```
+---
+# Graphing with `ggplot`
+**g**rammar of **g**raphics **plot**
+
+.pull-right[
+```{r  out.width = "75%", echo = FALSE}
+include_graphics("figures/ggplot-layers.png") 
+```
+]
 
 ---
-# Graphing
+# Graphing with `ggplot`
+**g**rammar of **g**raphics **plot**
+
+.center[
+```{r  out.width = "75%", echo = FALSE}
+include_graphics("figures/ggplot-layers-2.png") 
+```
+]
+---
+# Graphing with `ggplot`
+
+.pull-left[
+```{r ggplot-01, eval = FALSE}
+ggplot(data = diamonds) #<<
+```
+First add data
+]
+
+.pull-right[
+```{r ggplot-01-out, ref.label="ggplot-01", echo=FALSE}
+```
+]
+---
+# Graphing with `ggplot`
+
+.pull-left[
+```{r ggplot-0, eval = FALSE}
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) #<<
+```
+Second add aesthetics
+]
+
+.pull-right[
+```{r ggplot-0-out, ref.label="ggplot-0", echo=FALSE}
+```
+]
+---
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-1, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
-    geom_point() 
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
+    geom_point() #<<
 ```
+Third add geometry
 ]
 
 .pull-right[
@@ -80,14 +129,16 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ```
 ]
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-2, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
     geom_point() +
     theme_classic() #<<
 ```
+Fourth add theme
 ]
 
 .pull-right[
@@ -96,16 +147,18 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-3, eval = FALSE}
-base_plot = ggplot(data = diamonds, aes(y = price, x = carat)) +
+base_plot = ggplot(data = diamonds, 
+                   aes(y = price, x = carat)) +
     geom_point()
 
 base_plot + #<<
-  {{theme_classic()}} #<<
+  theme_classic() #<<
 ```
+Alternative way of making changes to a "base" plot
 ]
 
 .pull-right[
@@ -114,14 +167,16 @@ base_plot + #<<
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-5, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
     geom_point(alpha = .1) + #<<
     theme_classic()
 ```
+Exploring geometry options
 ]
 
 .pull-right[
@@ -130,11 +185,12 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-6a, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
     theme_classic() + 
     theme(text = element_text(size = 18)) + #<<
@@ -143,6 +199,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           y = "", 
           x = "Carat")
 ```
+Change text size
 ]
 
 .pull-right[
@@ -151,11 +208,12 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-6b, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
     theme_classic() + 
     theme(text = element_text(size = 18)) +
@@ -164,6 +222,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           y = "",  #<<
           x = "Carat") #<<
 ```
+Change text options
 ]
 
 .pull-right[
@@ -172,11 +231,12 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-7, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat)) +
+ggplot(data = diamonds, 
+       aes(y = price, x = carat)) +
     geom_point(alpha = .1) +
     facet_wrap(~color) + #<<
     theme_classic() + 
@@ -186,6 +246,7 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
           y = "",  
           x = "Carat") 
 ```
+Add facets
 ]
 
 .pull-right[
@@ -195,11 +256,12 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-8, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + #<<
+ggplot(data = diamonds, 
+       aes(y = price, x = carat, color = clarity)) + #<<
     geom_point(alpha = .1) +
     facet_wrap(~color) +
     theme_classic() + 
@@ -209,6 +271,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + #<<
           y = "", 
           x = "Carat")
 ```
+Add color to points based on clarity of diamond
 ]
 
 .pull-right[
@@ -218,11 +281,12 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + #<<
 
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-9, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+ggplot(data = diamonds, 
+       aes(y = price, x = carat, color = clarity)) + 
     geom_point(alpha = .1) +
     facet_wrap(~color) +
     geom_smooth(method = "lm") + #<<
@@ -233,6 +297,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
           y = "", 
           x = "Carat")
 ```
+Add regression line
 ]
 
 .pull-right[
@@ -241,11 +306,12 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-9b, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+ggplot(data = diamonds, 
+       aes(y = price, x = carat, color = clarity)) + 
     geom_point(alpha = .1) + #<<
     facet_wrap(~color) +
     geom_smooth(method = "lm") + 
@@ -256,6 +322,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
           y = "", 
           x = "Carat")
 ```
+De-clutter by removing points
 ]
 
 .pull-right[
@@ -264,11 +331,12 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
 ]
 
 ---
-# Graphing
+# Graphing with `ggplot`
 
 .pull-left[
 ```{r ggplot-10, eval = FALSE}
-ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+ggplot(data = diamonds, 
+       aes(y = price, x = carat, color = clarity)) + 
     facet_wrap(~color) +
     geom_smooth(method = "lm") + 
     theme_classic() + 
@@ -278,6 +346,7 @@ ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
           y = "", 
           x = "Carat")
 ```
+De-clutter by removing points
 ]
 
 .pull-right[

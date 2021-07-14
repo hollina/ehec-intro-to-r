@@ -1,0 +1,8 @@
+Statamarkdown-package   Settings and functions to extend the knitr
+                        Stata engine.
+find_stata              A helper function that seeks to locate your
+                        Stata executable. Ordinarily this is run
+                        automatically when 'Statamarkdown' is loaded.
+spinstata               Convert a specially marked up Stata "do" file
+                        to Markdown and HTML.
+stata_engine            Define a Stata engine for knitr
