@@ -263,11 +263,126 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ```
 ]
 
+---
+# Graphing
 
-<!--
+.pull-left[
+```{r ggplot-7, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+    facet_wrap(~color) + #<<
+    theme_classic() + 
+    theme(text = element_text(size = 18)) +
+    labs(title = "Larger diamonds cost more", 
+          subtitle = "Price, $", 
+          y = "",  
+          x = "Carat") 
+```
+]
+
+.pull-right[
+```{r ggplot-7-out, ref.label="ggplot-7", echo=FALSE}
+```
+]
+
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-8, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + #<<
+    geom_point(alpha = .1) +
+    facet_wrap(~color) +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+```{r ggplot-8-out, ref.label="ggplot-8", echo=FALSE}
+```
+]
+
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-9, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+    geom_point(alpha = .1) +
+    facet_wrap(~color) +
+    geom_smooth(method = "lm") + #<<
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+```{r ggplot-9-out, ref.label="ggplot-9", echo=FALSE, message=FALSE }
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-9b, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+    geom_point(alpha = .1) + #<<
+    facet_wrap(~color) +
+    geom_smooth(method = "lm") + 
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+```{r ggplot-9b-out, ref.label="ggplot-9b", echo=FALSE, message=FALSE }
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-10, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+    facet_wrap(~color) +
+    geom_smooth(method = "lm") + 
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+```{r ggplot-10-out, ref.label="ggplot-10", echo=FALSE, message=FALSE }
+```
+]
+
+---
 # Let's switch over to an R-Markdown document
 
-Personally, I love how xaringan looks. I like the simplicity. 
+### Also look. Some latex
 
-BUT I regularly run into minor road blocks and often am making presentations too close to the deadline, so end up switching to easier to use, but harder to update...Power point :)
--->
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
+  \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{2}\,\right)
+$$

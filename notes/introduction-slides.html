@@ -643,14 +643,129 @@ ggplot(data = diamonds, aes(y = price, x = carat)) +
 ![](introduction-slides_files/figure-html/ggplot-6b-out-1.png)&lt;!-- --&gt;
 ]
 
+---
+# Graphing
 
-&lt;!--
+.pull-left[
+
+```r
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+*   facet_wrap(~color) +
+    theme_classic() + 
+    theme(text = element_text(size = 18)) +
+    labs(title = "Larger diamonds cost more", 
+          subtitle = "Price, $", 
+          y = "",  
+          x = "Carat") 
+```
+]
+
+.pull-right[
+![](introduction-slides_files/figure-html/ggplot-7-out-1.png)&lt;!-- --&gt;
+]
+
+
+---
+# Graphing
+
+.pull-left[
+
+```r
+*ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) +
+    geom_point(alpha = .1) +
+    facet_wrap(~color) +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+![](introduction-slides_files/figure-html/ggplot-8-out-1.png)&lt;!-- --&gt;
+]
+
+
+---
+# Graphing
+
+.pull-left[
+
+```r
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+    geom_point(alpha = .1) +
+    facet_wrap(~color) +
+*   geom_smooth(method = "lm") +
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+![](introduction-slides_files/figure-html/ggplot-9-out-1.png)&lt;!-- --&gt;
+]
+
+---
+# Graphing
+
+.pull-left[
+
+```r
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+*   geom_point(alpha = .1) +
+    facet_wrap(~color) +
+    geom_smooth(method = "lm") + 
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+![](introduction-slides_files/figure-html/ggplot-9b-out-1.png)&lt;!-- --&gt;
+]
+
+---
+# Graphing
+
+.pull-left[
+
+```r
+ggplot(data = diamonds, aes(y = price, x = carat, color = clarity)) + 
+    facet_wrap(~color) +
+    geom_smooth(method = "lm") + 
+    theme_classic() + 
+    theme(text = element_text(size = 14)) +
+    labs(title = "Larger diamonds cost more by diamond color", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+![](introduction-slides_files/figure-html/ggplot-10-out-1.png)&lt;!-- --&gt;
+]
+
+---
 # Let's switch over to an R-Markdown document
 
-Personally, I love how xaringan looks. I like the simplicity. 
+### Also look. Some latex
 
-BUT I regularly run into minor road blocks and often am making presentations too close to the deadline, so end up switching to easier to use, but harder to update...Power point :)
---&gt;
+$$
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
+  \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{2}\,\right)
+$$
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
