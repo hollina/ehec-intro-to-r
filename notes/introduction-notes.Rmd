@@ -12,7 +12,7 @@ output:
         code_download: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE, dpi=300)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, dpi=300, warning = FALSE)
 ```
 
 ## Prologue: R Markdown 
@@ -358,6 +358,8 @@ modelsummary(
   )
 ```
 
+> **Note:** R (and Python) use a different default sandwich estimator for calculating "robust" (HC) SEs than Stata. The differences in most cases are likely to be small and due to a different DoF adjustment choice. For more information, see [here](https://declaredesign.org/r/estimatr/articles/stata-wls-hat.html) or  [here](https://lrberge.github.io/fixest/articles/standard_errors.html link).
+
 #### Aside 2: Coefficient plot
 
 The final arrow in the modelsummary quiver is [`modelplot()`](https://vincentarelbundock.github.io/modelsummary/articles/modelplot.html). This accepts most of the same arguments as its `modelsummary()` companion and produces nice, ggplot2-friendly coefficient plots. Adapting our previous example:
@@ -383,9 +385,6 @@ The fixed effects are those after the `|` symbol.
 ```{r fixest-model}
 fe_model = feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds, cluster = ~color)
 ```
-
-> **Aside:** Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://lrberge.github.io/fixest/articles/standard_errors.html
-
 
 We can create a similar list as earlier. 
 
@@ -465,7 +464,7 @@ This will install `pacman` if it's not currently installed. This code also intro
 
 ### `renv`
 
-`renv` helps make sure that differences in package versions won't prevent you from being able to replicate your results. Essentially it stores the exact version of each package you are using in a lock file. It makes it easy for another person (or future you) to use the exact same version of each package. It saves these in a `renv.lock` file.  Once you've installed `renv` and you've opened up a new R-project, just type `renv::init()` and you should be good to go. `renv::snapshot()` will update changes. 
+`renv` helps make sure that differences in package versions won't prevent you from being able to replicate your results. Essentially it stores the exact version of each package you are using in a sandboxed environment. It makes it easy for another person (or future you) to use the exact same version of each package. It saves these in a `renv.lock` file.  Once you've installed `renv` and you've opened up a new R-project, just type `renv::init()` and you should be good to go. `renv::snapshot()` will update changes. 
 
 You can read more about `renv` here: https://rstudio.github.io/renv/articles/renv.html
 
@@ -531,6 +530,15 @@ shell /usr/local/bin/R --vanilla <test.R
 ```
 
 ## Misc. tips
+
+
+### Use R projects
+
+If you take a look at the parent directory (repo) containing this document, you'll see a file called `ehec-intro-to-r.Rproj`. The `.Rproj` denotes an "R project" file. 
+
+What is this and why is it useful? Think of `.Rproj` files as specifying the root of a bunch of related files. Among other things, this helps to keep your projects organised and ergonomic. For example, you can open a group of related files in RStudio simply by clicking the `.Rproj` file. It also means that you never have to worry about specifying absolute paths when reading or writing files. You need only specify _relative_ paths, since R knows that the project file acts as a base (root) for everything else.
+
+R Projects are just as easy to create as regular R scripts or Rmd files. You can use them to start new projects or associate with an existing directory. Read more about them [here](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects).
 
 ### Clear memory
 
