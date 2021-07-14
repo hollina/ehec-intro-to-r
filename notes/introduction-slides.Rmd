@@ -54,15 +54,6 @@ Output
 sin(3)
 ```
 
-
----
-
-# Learn more about R-Markdown
-
-- If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
-
-- To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
-
 ---
 # Running code 
 
