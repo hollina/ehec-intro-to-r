@@ -19,6 +19,15 @@ output:
     padding: 1em 4em 1em 4em;
 }
 </style>
+
+```{r set-up, echo = FALSE}
+# From https://www.garrickadenbuie.com/blog/highlight-lines-without-breaking-the-code-in-xaringan/
+hook_source <- knitr::knit_hooks$get('source')
+knitr::knit_hooks$set(source = function(x, options) {
+  x <- stringr::str_replace(x, "^[[:blank:]]?([^*].+?)[[:blank:]]*#<<[[:blank:]]*$", "*\\1")
+  hook_source(x, options)
+})
+```
 # This document was made using R-Markdown.
 
 - R-Markdown is great because you can combine text with R code and results. 
@@ -124,6 +133,135 @@ diamonds %>%
 
 ---
 # Summary statistics table
+
+First, load the model summary package 
+```{r load-modelsummary}
+library(modelsummary)
+```
+
+---
+# Summary statistics table
+
+Now we can use the `datasummary_skim` function. 
+
+```{r summary-table}
+datasummary_skim(diamonds)
+```
+
+---
+# Summary statistics table
+
+But not every variable is numeric. `datasummary` has this covered with the `type = "categorical"` sub-option. 
+
+```{r summary-table-categorical}
+datasummary_skim(diamonds, type = "categorical")
+```
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-1, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point() 
+```
+]
+
+.pull-right[
+```{r ggplot-1-out, ref.label="ggplot-1", echo=FALSE}
+```
+]
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-2, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point() +
+    theme_classic() #<<
+```
+]
+
+.pull-right[
+```{r ggplot-2-out, ref.label="ggplot-2", echo=FALSE}
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-3, eval = FALSE}
+base_plot = ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point()
+
+base_plot + #<<
+  {{theme_classic()}} #<<
+```
+]
+
+.pull-right[
+```{r ggplot-3-out, ref.label="ggplot-3", echo=FALSE}
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-5, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) + #<<
+    theme_classic()
+```
+]
+
+.pull-right[
+```{r ggplot-5-out, ref.label="ggplot-5", echo=FALSE}
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-6a, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+    theme_classic() + 
+    theme(text = element_text(size = 18)) + #<<
+    labs(title = "Larger diamonds cost more", 
+          subtitle = "Price, $",
+          y = "", 
+          x = "Carat")
+```
+]
+
+.pull-right[
+```{r ggplot-6a-out, ref.label="ggplot-6a", echo=FALSE}
+```
+]
+
+---
+# Graphing
+
+.pull-left[
+```{r ggplot-6b, eval = FALSE}
+ggplot(data = diamonds, aes(y = price, x = carat)) +
+    geom_point(alpha = .1) +
+    theme_classic() + 
+    theme(text = element_text(size = 18)) +
+    labs(title = "Larger diamonds cost more", #<<
+          subtitle = "Price, $", #<<
+          y = "",  #<<
+          x = "Carat") #<<
+```
+]
+
+.pull-right[
+```{r ggplot-6b-out, ref.label="ggplot-6b", echo=FALSE}
+```
+]
 
 
 <!--
