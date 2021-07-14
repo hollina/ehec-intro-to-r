@@ -28,11 +28,23 @@ output:
 
 - You can also just simply write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. No need for this fancy `.Rmd` Markdown business. 
 
-- But it's pretty cool to integrate code with results right into the presentation. 
+---
+# This document was made using R-Markdown.
 
-```{r, eval = TRUE}
+- It's pretty cool to integrate code with results right into the presentation. 
+
+Input
+```{r echo=FALSE, class.output="r", comment=""}
+cat("```{r} \n sin(3) \n```")
+```
+
+--
+
+Output
+```{r}
 sin(3)
 ```
+
 
 ---
 
@@ -43,16 +55,26 @@ sin(3)
 - To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
 
 ---
-# Code Chunks
+# Running code 
 
+### Code Chunks
 This is a code chunk that will evaluate the command  `sin(3)` 
 
+```{r echo=FALSE, class.output="r", comment=""}
+cat("```{r} \n sin(3) \n```")
+```
 
+The output of this will appear as follows:
 
-The output of tis will appear as follows:
-
-```{r echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE}
 sin(3)
 ```
 
+--
+
+### Inline Code
+
 You can also create calculations inline for example `` `r knitr::inline_expr("sin(3)")` `` will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
+
+---
+# Let's switch over to an R-Markdown document

@@ -252,7 +252,7 @@ Indiana University | University of Oregon | Chicago FED<br>
 <h2>Introduction</h2>
 <div id="what-is-r-markdown" class="section level3">
 <h3>What is R-Markdown</h3>
-<p>This is an R-Markdown document. It’s a combination of text that is formatted using markdown syntax, R code, and results from running R code. It’s saved as an <code>.Rmd</code> file. You can also write <code>.R</code> code that is analagous to a <code>.do</code> file where there’s a list of commands with comments.</p>
+<p>This is an R-Markdown document. It’s a combination of text that is formatted using markdown syntax, R code, and results from running R code. It’s saved as an <code>.Rmd</code> file. You can also write <code>.R</code> code that is analogous to a <code>.do</code> file where there’s a list of commands with comments.</p>
 <ul>
 <li>If you are curious about markdown formatting, you can check out this handy guide. <a href="https://www.markdownguide.org/basic-syntax/" class="uri">https://www.markdownguide.org/basic-syntax/</a></li>
 <li>To learn more about R-Markdown, this “cheat-sheet” <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a>, is a good starting place.</li>
@@ -279,14 +279,6 @@ sin(3)
 <p>I will also load the <code>dplyr</code> package (also a part of the <code>tidyverse</code>) so we can write some cleaner code using “pipes” (the <code>%&gt;%</code> syntax).</p>
 <pre class="r"><code>library(ggplot2)
 library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
 <p>You can install packages using the <code>install.packages()</code> syntax, but see the section on <code>pacman</code> below before worrying about that.</p>
 </div>
 <div id="view-data" class="section level2">
@@ -305,8 +297,8 @@ library(dplyr)</code></pre>
 ## 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48</code></pre>
 <p>We can get a list of column names fairly easily too</p>
 <pre class="r"><code>names(diamonds)</code></pre>
-<pre><code>##  [1] &quot;carat&quot;   &quot;cut&quot;     &quot;color&quot;   &quot;clarity&quot; &quot;depth&quot;   &quot;table&quot;   &quot;price&quot;  
-##  [8] &quot;x&quot;       &quot;y&quot;       &quot;z&quot;</code></pre>
+<pre><code>##  [1] &quot;carat&quot;   &quot;cut&quot;     &quot;color&quot;   &quot;clarity&quot; &quot;depth&quot;   &quot;table&quot;   &quot;price&quot;   &quot;x&quot;      
+##  [9] &quot;y&quot;       &quot;z&quot;</code></pre>
 <p>Let’s compute the average price by color</p>
 <pre class="r"><code>diamonds %&gt;% group_by(color) %&gt;% summarise(mean(price)) </code></pre>
 <pre><code>## # A tibble: 7 x 2
@@ -1796,6 +1788,19 @@ Type &#39;q()&#39; to quit R.
 <div id="clear-memory" class="section level3">
 <h3>Clear memory</h3>
 <p>Using <code>rm(list = ls())</code> to clear the objects in memory (not loaded packages). As far as I know you need to restart R to clear out loaded packages, but I’m not 100% sure about this.</p>
+</div>
+<div id="reading-and-writing-data" class="section level3">
+<h3>Reading and writing data</h3>
+<ul>
+<li>Whenever possible, I try to use the <code>data.table</code> functions <code>fread</code> and <code>fwrite</code>. These work really well for csv data.</li>
+</ul>
+<p>For example, let’s save the diamonds dataset so we can import it in stata for a little example later on.</p>
+<pre class="r"><code>library(data.table)
+fwrite(diamonds, file = &quot;data/diamonds.csv&quot;)</code></pre>
+</div>
+<div id="collapsing-data" class="section level3">
+<h3>Collapsing data</h3>
+<p>The <code>collapse</code> package is amazing.</p>
 </div>
 </div>
 

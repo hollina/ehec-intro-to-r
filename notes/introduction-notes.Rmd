@@ -487,3 +487,18 @@ shell /usr/local/bin/R --vanilla <test.R
 ### Clear memory
 
 Using  `rm(list = ls())` to clear the objects in memory (not loaded packages). As far as I know you need to restart R to clear out loaded packages, but I'm not 100% sure about this. 
+
+### Reading and writing data
+
+- Whenever possible, I try to use the `data.table` functions `fread` and `fwrite`. These work really well for csv data.
+
+For example, let's save the diamonds dataset so we can import it in stata for a little example later on.
+
+```{r save-diamonds}
+library(data.table)
+fwrite(diamonds, file = "data/diamonds.csv")
+```
+
+### Collapsing data
+
+The `collapse` package is amazing. 

@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="author" content="Alex Hollingsworth, Grant McDermott, and Kelli Marquardt" />
     <meta name="date" content="2021-07-13" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -35,16 +35,31 @@ class: center, middle, inverse, title-slide
 
 - You can also just simply write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. No need for this fancy `.Rmd` Markdown business. 
 
-- But it's pretty cool to integrate code with results right into the presentation. 
+---
+# This document was made using R-Markdown.
 
+- It's pretty cool to integrate code with results right into the presentation. 
+
+Input
+
+````{.r}
+```{r} 
+ sin(3) 
+```
+````
+
+--
+
+Output
 
 ```r
 sin(3)
 ```
 
 ```
-[1] 0.14112
+## [1] 0.14112
 ```
+
 
 ---
 
@@ -55,20 +70,33 @@ sin(3)
 - To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
 
 ---
-# Code Chunks
+# Running code 
 
+### Code Chunks
 This is a code chunk that will evaluate the command  `sin(3)` 
 
 
+````{.r}
+```{r} 
+ sin(3) 
+```
+````
 
-The output of tis will appear as follows:
+The output of this will appear as follows:
 
 
 ```
-[1] 0.14112
+## [1] 0.14112
 ```
+
+--
+
+### Inline Code
 
 You can also create calculations inline for example `` `r sin(3)` `` will evaluate `sin(3)`. With output rendering like this 0.14112.
+
+---
+# Let's switch over to an R-Markdown document
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
