@@ -504,11 +504,11 @@ summarize
 pwd
 
 scatter price mpg
-graph export "scatter.png", replace
+graph export "output/scatter.png", replace
 ```
 
 You can then put these image in the RMarkdown document. 
-![scatter-from-stata](scatter.png)
+![scatter-from-stata](output/scatter.png)
 
 > **Note**: If you run this on your computer the scatter will likely not look the same. These are not default stata graph preferences. See [blindschemes](https://ideas.repec.org/c/boc/bocode/s458251.html) with the suboption `plotplainblind` if you like this formatting. 
 
@@ -574,7 +574,7 @@ twoway ///
   yla(,nogrid notick) ///
   xla(,nogrid notick)
   
-graph export "scatter-diamonds-using-csv.png", replace
+graph export "output/scatter-diamonds-using-csv.png", replace
 
 // Use the dta file saved by fwrite in R
 use data/diamonds.dta, clear
@@ -588,13 +588,13 @@ twoway ///
   yla(,nogrid notick) ///
   xla(,nogrid notick)
 
-graph export "scatter-diamonds-using-dta.png", replace
+graph export "output/scatter-diamonds-using-dta.png", replace
 ```
 
 You can then put these image in the RMarkdown document. 
 
-![scatter-from-stata-csv](scatter-diamonds-using-csv.png)
-![scatter-from-stata-dta](scatter-diamonds-using-dta.png)
+![scatter-from-stata-csv](output/scatter-diamonds-using-csv.png)
+![scatter-from-stata-dta](output/scatter-diamonds-using-dta.png)
 
 
 ### Collapsing data

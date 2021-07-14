@@ -30,185 +30,20 @@ class: center, middle, inverse, title-slide
 &lt;/style&gt;
 
 
+
 # This document was made using R-Markdown.
 
-- R-Markdown is great because you can combine text with R code and results. 
-
-  - Text is formatted using markdown syntax, 
-  - It's saved as an `.Rmd` file. 
-
-- You can also just simply write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. No need for this fancy `.Rmd` Markdown business. 
-
 ---
-# This document was made using R-Markdown.
-
-- It's pretty cool to integrate code with results right into the presentation. 
-
-Input
-
-````{.r}
-```{r} 
- sin(3) 
-```
-````
-
---
-
-Output
-
-```r
-sin(3)
-```
-
-```
-## [1] 0.14112
-```
-
+# This document was also made using R-Markdown.
+.center[
+&lt;img src="figures/personal-website.png" width="75%" /&gt;
+]
 ---
-# Running code 
+# This document was also made using R-Markdown.
+.center[
+&lt;img src="figures/package-website-and-package.png" width="75%" /&gt;
+]
 
-### Code Chunks
-This is a code chunk that will evaluate the command  `sin(3)` 
-
-
-````{.r}
-```{r} 
- sin(3) 
-```
-````
-
-The output of this will appear as follows:
-
-
-```
-## [1] 0.14112
-```
-
---
-
-### Inline Code
-
-You can also create calculations inline for example &lt;code&gt; r  sin(3) &lt;/code&gt;
- will evaluate `sin(3)`. With output rendering like this 0.14112.
-
----
-# Loading packages
-
-```r
-library(ggplot2)
-library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
-
----
-# Viewing data
-
-```r
-head(diamonds)
-```
-
-```
-## # A tibble: 6 x 10
-##   carat cut       color clarity depth table price     x     y     z
-##   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
-## 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
-## 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
-## 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
-## 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
-## 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
-```
-
----
-# Viewing data
-
-We can get a list of column names fairly easily too
-
-
-```r
-names(diamonds)
-```
-
-```
-##  [1] "carat"   "cut"     "color"   "clarity" "depth"   "table"   "price"  
-##  [8] "x"       "y"       "z"
-```
-
----
-# Viewing data
-
-
-```r
-diamonds %&gt;% group_by(color) %&gt;% summarise(mean(price)) 
-```
-
-```
-## # A tibble: 7 x 2
-##   color `mean(price)`
-##   &lt;ord&gt;         &lt;dbl&gt;
-## 1 D             3170.
-## 2 E             3077.
-## 3 F             3725.
-## 4 G             3999.
-## 5 H             4487.
-## 6 I             5092.
-## 7 J             5324.
-```
-
-Here the pipe command `%&gt;%` will take the output from the command on the left and "pipes" it as input to the command on the right. 
-
----
-# Viewing data
-
-
-```r
-diamonds %&gt;% 
-  group_by(color) %&gt;% 
-  summarise(mean(price)) 
-```
-
-```
-## # A tibble: 7 x 2
-##   color `mean(price)`
-##   &lt;ord&gt;         &lt;dbl&gt;
-## 1 D             3170.
-## 2 E             3077.
-## 3 F             3725.
-## 4 G             3999.
-## 5 H             4487.
-## 6 I             5092.
-## 7 J             5324.
-```
-
-1. You can just move onto a new line without an error. This is neat because it allows us to write cleaner code and you don't need a delimiter or the `///` you may be used to from stata. So we can rewrite the above like this. 
-1. In more recent versions of R (4.1 and above), you don't need to have `dpylr` installed to pipe. You can do the same thing using `|&gt;`. 
-
----
-# Summary statistics table
-
-First, load the model summary package 
-
-```r
-library(modelsummary)
-```
 
 ---
 # Summary statistics table
@@ -381,149 +216,6 @@ datasummary_skim(diamonds)
   &lt;/style&gt;&lt;/defs&gt;&lt;rect width="100%" height="100%" style="stroke: none; fill: none;"&gt;&lt;/rect&gt;&lt;defs&gt;&lt;clipPath id="cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw"&gt;&lt;rect x="0.00" y="0.00" width="48.00" height="12.00"&gt;&lt;/rect&gt;&lt;/clipPath&gt;&lt;/defs&gt;&lt;g clip-path="url(#cpMC4wMHw0OC4wMHwwLjAwfDEyLjAw)"&gt;
 &lt;/g&gt;&lt;defs&gt;&lt;clipPath id="cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw"&gt;&lt;rect x="0.00" y="2.88" width="48.00" height="9.12"&gt;&lt;/rect&gt;&lt;/clipPath&gt;&lt;/defs&gt;&lt;g clip-path="url(#cpMC4wMHw0OC4wMHwyLjg4fDEyLjAw)"&gt;&lt;rect x="1.78" y="11.66" width="2.80" height="0.0050" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="4.57" y="3.22" width="2.80" height="8.44" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="7.37" y="8.40" width="2.80" height="3.26" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="10.16" y="11.66" width="2.80" height="0.0026" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="12.96" y="11.66" width="2.80" height="0.00022" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="15.75" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="18.55" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="21.34" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="24.14" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="26.94" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="29.73" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="32.53" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="35.32" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="38.12" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="40.91" y="11.66" width="2.80" height="0.00" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;rect x="43.71" y="11.66" width="2.80" height="0.00022" style="stroke-width: 0.38; fill: #000000;"&gt;&lt;/rect&gt;&lt;/g&gt;&lt;/svg&gt;
 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-# Summary statistics table
-
-But not every variable is numeric. `datasummary` has this covered with the `type = "categorical"` sub-option. 
-
-
-```r
-datasummary_skim(diamonds, type = "categorical")
-```
-
-&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt;    &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; N &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; % &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; cut &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Fair &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1610 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Good &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 4906 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9.1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Very Good &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12082 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22.4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13791 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25.6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Ideal &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 21551 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 40.0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; color &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6775 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12.6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; E &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9797 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18.2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9542 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.7 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; G &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 11292 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20.9 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; H &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8304 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15.4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; I &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5422 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 10.1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; J &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2808 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; clarity &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; I1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 741 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; SI2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9194 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 17.0 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; SI1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 13065 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24.2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; VS2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 12258 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 22.7 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; VS1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 8171 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15.1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; VVS2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 5066 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 9.4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; VVS1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3655 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 6.8 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; IF &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1790 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -757,6 +449,16 @@ $$
 f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
   \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{2}\,\right)
 $$
+---
+# And oh yea, this was made in R too.
+
+.pull-left[
+![](figures/montereybay.gif)
+]
+.pull-right[
+- Check out [`rayshader`](https://www.rayshader.com) if you want to make your own awesome map, 2D, and 3D visualization. 
+- Source of image: https://wcmbishop.github.io/rayshader-demo/
+]
 ---
 exclude: true
 

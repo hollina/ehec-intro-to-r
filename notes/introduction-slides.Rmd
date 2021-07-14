@@ -20,7 +20,16 @@ output:
 }
 </style>
 
-```{r set-up, echo = FALSE}
+```{r set-up, echo = FALSE, warning=FALSE, include = FALSE}
+# Load packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  ggplot2, dplyr, modelsummary, knitr, png, pagedown
+)
+
+# Package settings
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, dpi=300)
+
 # From https://www.garrickadenbuie.com/blog/highlight-lines-without-breaking-the-code-in-xaringan/
 hook_source <- knitr::knit_hooks$get('source')
 knitr::knit_hooks$set(source = function(x, options) {
@@ -28,107 +37,24 @@ knitr::knit_hooks$set(source = function(x, options) {
   hook_source(x, options)
 })
 ```
+
 # This document was made using R-Markdown.
 
-- R-Markdown is great because you can combine text with R code and results. 
-
-  - Text is formatted using markdown syntax, 
-  - It's saved as an `.Rmd` file. 
-
-- You can also just simply write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. No need for this fancy `.Rmd` Markdown business. 
-
 ---
-# This document was made using R-Markdown.
-
-- It's pretty cool to integrate code with results right into the presentation. 
-
-Input
-```{r echo=FALSE, class.output="r", comment=""}
-cat("```{r} \n sin(3) \n```")
+# This document was also made using R-Markdown.
+.center[
+```{r  out.width = "75%", echo = FALSE}
+include_graphics("figures/personal-website.png") 
 ```
-
---
-
-Output
-```{r}
-sin(3)
-```
-
+]
 ---
-# Running code 
-
-### Code Chunks
-This is a code chunk that will evaluate the command  `sin(3)` 
-
-```{r echo=FALSE, class.output="r", comment=""}
-cat("```{r} \n sin(3) \n```")
+# This document was also made using R-Markdown.
+.center[
+```{r  out.width = "75%", echo = FALSE}
+include_graphics("figures/package-website-and-package.png") 
 ```
+]
 
-The output of this will appear as follows:
-
-```{r, echo = FALSE, eval = TRUE}
-sin(3)
-```
-
---
-
-### Inline Code
-
-You can also create calculations inline for example <code> r  sin(3) </code>
- will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
-
----
-# Loading packages
-```{r}
-library(ggplot2)
-library(dplyr)
-```
-
-You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
-
----
-# Viewing data
-```{r head-of-data} 
-head(diamonds)
-```
-
----
-# Viewing data
-
-We can get a list of column names fairly easily too
-
-```{r list-of-column-names}
-names(diamonds)
-```
-
----
-# Viewing data
-
-```{r mean-price-by-color}
-diamonds %>% group_by(color) %>% summarise(mean(price)) 
-```
-
-Here the pipe command `%>%` will take the output from the command on the left and "pipes" it as input to the command on the right. 
-
----
-# Viewing data
-
-```{r mean-price-by-color-cleaner}
-diamonds %>% 
-  group_by(color) %>% 
-  summarise(mean(price)) 
-```
-
-1. You can just move onto a new line without an error. This is neat because it allows us to write cleaner code and you don't need a delimiter or the `///` you may be used to from stata. So we can rewrite the above like this. 
-1. In more recent versions of R (4.1 and above), you don't need to have `dpylr` installed to pipe. You can do the same thing using `|>`. 
-
----
-# Summary statistics table
-
-First, load the model summary package 
-```{r load-modelsummary}
-library(modelsummary)
-```
 
 ---
 # Summary statistics table
@@ -137,15 +63,6 @@ Now we can use the `datasummary_skim` function.
 
 ```{r summary-table}
 datasummary_skim(diamonds)
-```
-
----
-# Summary statistics table
-
-But not every variable is numeric. `datasummary` has this covered with the `type = "categorical"` sub-option. 
-
-```{r summary-table-categorical}
-datasummary_skim(diamonds, type = "categorical")
 ```
 
 ---
@@ -377,6 +294,16 @@ $$
 f(x) = \frac{1}{\sigma\sqrt{2\pi}} 
   \exp\left( -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{2}\,\right)
 $$
+---
+# And oh yea, this was made in R too.
+
+.pull-left[
+![](figures/montereybay.gif)
+]
+.pull-right[
+- Check out [`rayshader`](https://www.rayshader.com) if you want to make your own awesome map, 2D, and 3D visualization. 
+- Source of image: https://wcmbishop.github.io/rayshader-demo/
+]
 ---
 exclude: true
 
