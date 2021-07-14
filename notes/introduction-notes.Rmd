@@ -510,7 +510,7 @@ graph export "scatter.png", replace
 You can then put these image in the RMarkdown document. 
 ![scatter-from-stata](scatter.png)
 
-> **Note**: These are not default stata graph preferences. See (blindschemes)[https://ideas.repec.org/c/boc/bocode/s458251.html] with the suboption `plotplainblind` if you like these formatting. 
+> **Note**: If you run this on your computer the scatter will likely not look the same. These are not default stata graph preferences. See [blindschemes](https://ideas.repec.org/c/boc/bocode/s458251.html) with the suboption `plotplainblind` if you like this formatting. 
 
 > **Aside**: It's possible to do this without the `Statamarkdown` package, but I struggeled to get it to work, possibly because I have Stata-MP. You can see this link for more details:  https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html For more information on `Statamarkdown` see here: https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html
 
