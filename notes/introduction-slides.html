@@ -93,10 +93,113 @@ The output of this will appear as follows:
 
 ### Inline Code
 
-You can also create calculations inline for example `` `r sin(3)` `` will evaluate `sin(3)`. With output rendering like this 0.14112.
+You can also create calculations inline for example &lt;code&gt; r  sin(3) &lt;/code&gt;
+ will evaluate `sin(3)`. With output rendering like this 0.14112.
 
 ---
+# Loading packages
+
+```r
+library(ggplot2)
+library(dplyr)
+```
+
+You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
+
+---
+# Viewing data
+
+```r
+head(diamonds)
+```
+
+```
+## # A tibble: 6 x 10
+##   carat cut       color clarity depth table price     x     y     z
+##   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+## 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+## 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+## 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+## 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+## 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+```
+
+---
+# Viewing data
+
+We can get a list of column names fairly easily too
+
+
+```r
+names(diamonds)
+```
+
+```
+##  [1] "carat"   "cut"     "color"   "clarity" "depth"   "table"   "price"   "x"      
+##  [9] "y"       "z"
+```
+
+---
+# Viewing data
+
+
+```r
+diamonds %&gt;% group_by(color) %&gt;% summarise(mean(price)) 
+```
+
+```
+## # A tibble: 7 x 2
+##   color `mean(price)`
+##   &lt;ord&gt;         &lt;dbl&gt;
+## 1 D             3170.
+## 2 E             3077.
+## 3 F             3725.
+## 4 G             3999.
+## 5 H             4487.
+## 6 I             5092.
+## 7 J             5324.
+```
+
+Here the pipe command `%&gt;%` will take the output from the command on the left and "pipes" it as input to the command on the right. 
+
+---
+# Viewing data
+
+
+```r
+diamonds %&gt;% 
+  group_by(color) %&gt;% 
+  summarise(mean(price)) 
+```
+
+```
+## # A tibble: 7 x 2
+##   color `mean(price)`
+##   &lt;ord&gt;         &lt;dbl&gt;
+## 1 D             3170.
+## 2 E             3077.
+## 3 F             3725.
+## 4 G             3999.
+## 5 H             4487.
+## 6 I             5092.
+## 7 J             5324.
+```
+
+1. You can just move onto a new line without an error. This is neat because it allows us to write cleaner code and you don't need a delimiter or the `///` you may be used to from stata. So we can rewrite the above like this. 
+1. In more recent versions of R (4.1 and above), you don't need to have `dpylr` installed to pipe. You can do the same thing using `|&gt;`. 
+
+---
+# Summary statistics table
+
+
+&lt;!--
 # Let's switch over to an R-Markdown document
+
+Personally, I love how xaringan looks. I like the simplicity. 
+
+BUT I regularly run into minor road blocks and often am making presentations too close to the deadline, so end up switching to easier to use, but harder to update...Power point :)
+--&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

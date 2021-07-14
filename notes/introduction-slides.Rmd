@@ -74,7 +74,62 @@ sin(3)
 
 ### Inline Code
 
-You can also create calculations inline for example `` `r knitr::inline_expr("sin(3)")` `` will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
+You can also create calculations inline for example <code> r  sin(3) </code>
+ will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
 
 ---
+# Loading packages
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
+
+---
+# Viewing data
+```{r head-of-data} 
+head(diamonds)
+```
+
+---
+# Viewing data
+
+We can get a list of column names fairly easily too
+
+```{r list-of-column-names}
+names(diamonds)
+```
+
+---
+# Viewing data
+
+```{r mean-price-by-color}
+diamonds %>% group_by(color) %>% summarise(mean(price)) 
+```
+
+Here the pipe command `%>%` will take the output from the command on the left and "pipes" it as input to the command on the right. 
+
+---
+# Viewing data
+
+```{r mean-price-by-color-cleaner}
+diamonds %>% 
+  group_by(color) %>% 
+  summarise(mean(price)) 
+```
+
+1. You can just move onto a new line without an error. This is neat because it allows us to write cleaner code and you don't need a delimiter or the `///` you may be used to from stata. So we can rewrite the above like this. 
+1. In more recent versions of R (4.1 and above), you don't need to have `dpylr` installed to pipe. You can do the same thing using `|>`. 
+
+---
+# Summary statistics table
+
+
+<!--
 # Let's switch over to an R-Markdown document
+
+Personally, I love how xaringan looks. I like the simplicity. 
+
+BUT I regularly run into minor road blocks and often am making presentations too close to the deadline, so end up switching to easier to use, but harder to update...Power point :)
+-->

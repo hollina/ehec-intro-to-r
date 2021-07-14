@@ -499,6 +499,22 @@ library(data.table)
 fwrite(diamonds, file = "data/diamonds.csv")
 ```
 
+`data.table` is **really** **really** good with big datasets.  Check out this walkthrough: https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
+
+- Reading and writing data in other formats is really easy with the `haven` package. This can also handle, wait for it, SAS datasets really easily. 
+
+```{r save-diamonds-dta}
+library(haven)
+haven::write_dta(diamonds, path = "data/diamonds.dta", version = 14)
+```
+
+- You can read and write excel data with `readxl` package, which is a part of the `tidyverse`
+
 ### Collapsing data
 
-The `collapse` package is amazing. 
+The `collapse` package is amazing. It's crazy fast too. `collapse` plus `data.table` make creating analyitic files from large microdata a breeze. 
+
+### Reshaping data. 
+
+`pivot_wider` and `pivot_longer` are both a part of the `tidyverse`. Read more about them here. https://tidyr.tidyverse.org/articles/pivot.html
+
