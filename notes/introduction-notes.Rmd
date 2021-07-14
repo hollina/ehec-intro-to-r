@@ -9,30 +9,25 @@ output:
         toc: yes
         toc_depth: 4
         toc_float: yes
+        code_download: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, dpi=300)
 ```
 
-## Introduction 
+## Prologue: R Markdown 
 
-### What is R-Markdown
+### What is R Markdown?
 
-This is an R-Markdown document. It's a combination of text that is formatted using markdown syntax, R code, and results from running R code. It's saved as an `.Rmd` file. You can also write `.R` code that is analogous to a `.do` file where there's a list of commands with comments. 
+Traditional `.R` scripts (analogous to a `.do` file in Stata) are a standard way to write pure R code. You could create a new R script yourself now by clicking the "New File" icon at the top-left of your RStudio session. Seriously, go ahead and try quickly.
 
-- If you are curious about markdown formatting, you can check out this handy guide. https://www.markdownguide.org/basic-syntax/
-- To learn more about R-Markdown, this "cheat-sheet" https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf, is a good starting place. 
+What you see in front of you, however, is not a plain R script. It is an [**R Markdown**](https://rmarkdown.rstudio.com/) document (file extension: `.Rmd`). This is simply a document type that allows you to combine both text --- like the sentence you are reading now --- and actual R code. It is similar to Stata's `dyndoc` and is a very convenient way to integrate text and code in a single document. Think of it like LaTeX and R had a baby, but was very easy to use (was a very good baby?). In fact, the same Rmd file can be "knitted" to multiple formats: html, pdf, rich text, etc.
 
-Basically all of the syntax like italics, headings, bold, citations is added using plain text and is "knit" into a formatted output. It's a bit like Latex in this regard. A nice feature of R-markdown is that you can output in a few different formats: html, pdf, rich text. You can also use a companion `.css` file that contains information on custom formatting preferences, which is especially helpful for html output.
+We don't want to get _too_ sidetracked by the special features of R Markdown... and should emphasise that it is not the only (or even "standard") way to do analysis in R. But it is an extremely popular feature of R and is also a great way to teach a session like this. If you are interested in learning more, then the [official website](https://rmarkdown.rstudio.com/) is a great place to start.^[If you are curious about Markdown formatting on its own --- how to get **bold** text or _italics_, how to create tables or headers, etc --- then see [this handy cheatsheet](https://www.markdownguide.org/basic-syntax/).] Note further that this document is about as vanilla as it gets, but you [can get](https://rmarkdown.rstudio.com/gallery.html) extremely fancy.
 
-Note: Comments in `.R` files are done with the `#` character. `.Rmd` files are mardown files so the `#` command will create a heading. To make comments in `.Rmd` files you can use html comment syntax `<!––` to start the comment and `––>` to end it. 
+### Send commands to R in R Markdown 
 
-This document is about as vanilla as it gets. 
-
-### Send commands to R in R-Markdown 
-
-Behind the scenes, in the `.Rmd` document we are typing in "code-chunks" that get run by R. These code chunks are fenced in with the at the beginning 
-and ending with . 
+Behind the scenes, in the `.Rmd` document we are typing in "code-chunks" that get run by R. These code chunks are fenced in with the backticks.
 
 For example, this is a code chunk that will evaluate the command  `sin(3)` 
 
@@ -50,23 +45,31 @@ sin(3)
 
 You can also create calculations inline for example `` `r knitr::inline_expr("sin(3)")` `` will evaluate `sin(3)`. With output rendering like this `r sin(3)`.
 
+Okay, with that bit of R Markdown prologue out of the way, let's get down to running actual R code.
 
 ## Load packages into memory 
 
-In R, you load packages into your memory. The package must be installed already. Think of it like an application on your phone. Here we are going to load the `ggplot2` package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` you may have heard of. Later we will cover how to manage packages. 
+An awful lot of work in R gets done through third-party packages that must be installed separately to "base" R. This is similar to how third-party packages in Stata can be installed from ssc. We recommend using RStudio's package installer to find and install (or update) any external packages. We'll show you how do to this in the live session, or you can take a look [here](https://raw.githack.com/uo-ec607/lectures/master/01-intro/01-Intro.html#34). But note that you can also install R packages directly from the R console, e.g.
 
-I will also load the `dplyr` package (also a part of the `tidyverse`) so we can write some cleaner code using "pipes" (the `%>%` syntax). 
+```{r pkg_install, eval=FALSE}
+install.packages(c('ggplot2', 'dplyr'))
+```
+
+A key difference between R and Stata, however, is that installed R packages must be loaded into memory if you want to use them in that session. Think of it like an app on your phone. You might have downloaded the app already, but you need to open it every time you use it. Later on we will cover how to manage packages efficiently. But right now, assuming that you have already installed them, let's load and play around with some R packages.
+
+Here we are going to load the [`ggplot2`](https://ggplot2.tidyverse.org/) package, which is an excellent graphics package. `gg` here stands for "grammar of graphics". This is a part of the `tidyverse` suite of packages that you may have heard of. We will also load the [`dplyr`](https://dplyr.tidyverse.org/) package, which is a popular data wrangling package (and is also a part of the `tidyverse`). 
 
 ```{r load-packages}
+# library(tidyverse) ## Shortcut to load both ggplot2 & dplyr (& several other packages)
 library(ggplot2)
 library(dplyr)
 ```
 
-You can install packages using the `install.packages()` syntax, but see the section on `pacman` below before worrying about that. 
+> **Aside:** Comments in `.R` files (or code chunks) are denoted with the `#` character. A shortcut to comment out a line (or region) in RStudio is `Ctrl + Shift + c`. This shortcut generally just works correctly for whatever language or script that you open in RStudio.^[Case in point: `.Rmd` files are Markdown files, so using a leading `#` in the text will create a heading rather than a comment. However, if we hit `Ctrl + Shift + c` then RStudio will automatically generate the correct comment syntax, namely `<!––` to start the comment and `––>` to end it.] 
 
 ## View data
 
-Now that this is loaded into memory, we can begin to use it. Much like stata's auto dataset, many packages have pre-installed datasets that are useful for tutorials and debugging. 
+Now that these pacakges are loaded into memory, we can begin to use them. In the code below, we'll explore the `diamonds` dataset that comes bundled with `ggplot2`. Much like Stata's auto dataset, many packages bundle pre-installed datasets that are useful for tutorials and debugging. 
 
 We can look at the first five observations using the `head` command
 
@@ -80,9 +83,12 @@ We can get a list of column names fairly easily too
 names(diamonds)
 ```
 
-Let's compute the average price by color 
+> Tip: You can bring the how dataset into view (similar to Stata's browse feature) by typing `View(diamonds)`. 
+
+Let's compute the average price by color. The next code chunk is using `dplyr` commands ("verbs") and invokes a "pipe" (the `%>%` syntax) to write cleaner code.
 
 ```{r mean-price-by-color}
+## summarise(group_by(diamonds, color), mean(price))
 diamonds %>% group_by(color) %>% summarise(mean(price)) 
 ```
 
@@ -112,8 +118,9 @@ Note: In this example, `%>%` and `|>` are interchangeable, but the two are not i
 
 #### Make summary statistics table. 
 
-An annoying, but also powerful, feature of R is that there are 15 ways to accomplish any task. In general limiting the number of packages you use is a good idea since you won't build dependencies on code that could become outdated as base R and other packages are updated. That being said, the power of R is the ability to use fantastic user written packages. Here we will use `modelsummary`'s `datasummary` packages to make fantastic summary statistic plots. Otherwise we'd have to continue to do things like we did above, exploring the data and making summary tables on our own.  
+An annoying, but also powerful, feature of R is that there are 15 ways to accomplish any task. In general, limiting the number of packages you use is a good idea since you won't build dependencies on code that could become outdated as base R and other packages are updated. That being said, the power of R is the ability to use fantastic user written packages. Here we will use the `datasummary*()` family of functions from the [**`modelsummary`**](https://vincentarelbundock.github.io/modelsummary/index.html) package to make fantastic summary statistic plots. Otherwise we'd have to continue to do things like we did above, exploring the data and making summary tables on our own.
 
+> **Aside:** In Stata, many ssc modules consist of one primary function, which shares the same name (e.g. `ivreg2`, `reghdfe`). R packages tend to have many functions, so you shouldn't expect these functions to share the exact same name as the package itself.
 
 First, load the model summary package 
 ```{r load-modelsummary}
@@ -133,7 +140,7 @@ But not every variable is numeric. `datasummary` has this covered with the `type
 datasummary_skim(diamonds, type = "categorical")
 ```
 
-Learn more about `datasummary` here: https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html 
+Learn more about the `datasummary*` family of functions here: https://vincentarelbundock.github.io/modelsummary/articles/datasummary.html 
 
 
 ##  Graphing
@@ -260,39 +267,49 @@ We can use ggplot to create all sorts of cool graphics. See cool gallery with co
 
 ## Run regressions
 
-To do this we can use a few different methods. We will use `modelsummary` and `etable` (from `fixest` package) to display the results
+To do this we can use a few different methods. We will first demonstrate using base R's `lm()` (**l**inear **m**odels) function and then with the `fixest` package.
+<!-- We will use `modelsummary` and `etable` (from `fixest` package) to display the results -->
 
 ###  Base R
 
-The `lm` function
+Regressions in R use a formula interface _a la_ `y ~ x1 + x2 + ...`. Let's see that in action via a simple OLS model using the `lm` function
 
 ```{r base-r-regression}
 base_model = lm(price ~ carat, data = diamonds)
 ```
 
+Two things to note:
 
-Display the base_model using model summary 
+1. We saved the resulting model as an object. If you take a look at your global Environment pane (top right window in RStudio). You should see the `base_model` object there. This reflects the fact that R can hold a multitude of objects in memory at any one time. Speaking fo which...
+
+2. Note that we specified the dataset that we want to use in the above call, i.e. `lm(..., data = diamonds)`. Specifying the dataset is very important in R; precisely because it can hold multiple objects and datasets in memory at any one time. This is a major difference to Stata where, frames aside, we only ever hold one dataset in memory at a time.
+
+To view detailed information about our saved regression model, I can use the generic `summary()` function.
+
+```{r base-summary}
+summary(base_model)
+```
+
+To put this in a regression table form, we can use the [`modelsummary()`](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html) function from the aforementioned package. 
 
 ```{r base-r-display}
+# library(modelsummary) ## Already loaded
 modelsummary(base_model) 
 ```
 
-We can tweak this output to look a bit better. We will use the nice `kableExtra` package to help. 
+We don't have time to go into much detail, but `modelsummary()` is extremely flexible and powerful. It also plays very well with other packages. For example, can tweak this output to look a bit better. We will use the nice `kableExtra` package to help. 
 
 ```{r load-kableExtra}
-library(kableExtra)
-```
+library(kableExtra) ## For adding a footnote to our table
 
-```{r base-r-display-with-formatting}
-modelsummary(base_model,  
+modelsummary(
+  base_model,  
   title = "Fantastic regression table", 
-  stars = TRUE,
-  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
-  coef_omit = c("(Intercept)"), 
-  coef_rename = c("carat" = "Carat", 
-                  "Num.Obs." = "N")) %>%
-  add_footnote("An important note.",
-  threeparttable = TRUE)
+  stars = TRUE, 
+  coef_map = c("carat" = "Carat"),
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2"
+  ) %>%
+  add_footnote("An important note.")
 ```
 
 Now we can run all sorts of other models and display them side-by-side. Let's add some controls 
@@ -313,20 +330,49 @@ models = list(
 We can use the same format as earlier. 
 
 ```{r base-r-model-display-2}
-modelsummary(models,  
+modelsummary(
+  models,  
   title = "Fantastic regression table", 
   stars = TRUE,
-  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
   coef_omit = c("(Intercept)"), 
-  coef_rename = c("carat" = "Carat", 
-                  "Num.Obs." = "N")) %>%
-  add_footnote("An important note.",
-  threeparttable = TRUE)
+  coef_rename = c("carat" = "Carat", "depth" = "Depth", "table" = "Table width"),
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2"
+  ) %>%
+  add_footnote("An important note.")
+```
+
+#### Aside 1: Adjusting standard errors
+
+Several R packages provide support for adjusting standard errors (SEs) at estimation time, similar to Stata's `, robust` syntax. We'll see an example of that in the next section. However, R also offers a powerful alternative: Namely "on-the-fly" SE adjustment for models that have _already_ been run. This alternative approach takes a little getting used to if you're coming from Stata. But separating estimation from inference in this way comes with some big potential upsides. 
+
+Grant has a [blog post](https://grantmcdermott.com/better-way-adjust-SEs/) that explains this on-the-fly adjustment process in more depth. However, to very quickly illustrate using the `modelsummary()` function again, consider what happens when we feed our single `base_model` object a set of "[vcov](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html#vcov-1)" arguments. Answer: It automatically reports the adjusted SEs for all those case without having to re-run the model again!
+
+```{r base_model_vcov}
+modelsummary(
+  base_model,  
+  vcov = c('iid', 'robust', 'stata', 'NeweyWest'), ## New
+  title = "One model, many standard errors", 
+  stars = TRUE,
+  coef_map = c("carat" = "Carat"),
+  gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2"
+  )
+```
+
+#### Aside 2: Coefficient plot
+
+The final arrow in the modelsummary quiver is [`modelplot()`](https://vincentarelbundock.github.io/modelsummary/articles/modelplot.html). This accepts most of the same arguments as its `modelsummary()` companion and produces nice, ggplot2-friendly coefficient plots. Adapting our previous example:
+
+```{r base_model_vcov_plot}
+modelplot(
+    base_model,  
+    vcov = c(iid = 'iid', 'robust', 'stata', 'NeweyWest'), 
+    coef_map = c("carat" = "Carat")
+    )
 ```
 
 ### Using `fixest`
 
-Next, we will use `fixest` to run a regression with fixed effects. 
+Next, we will use [**`fixest`**](https://lrberge.github.io/fixest/index.html) to run a regression with fixed effects. 
 
 ```{r load-fixest}
 library(fixest)
@@ -335,10 +381,10 @@ library(fixest)
 The fixed effects are those after the `|` symbol. 
 
 ```{r fixest-model}
-fe_model = feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds, cluster = c("color"))
+fe_model = feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds, cluster = ~color)
 ```
 
-Note: Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://cran.r-project.org/web/packages/fixest/vignettes/standard_errors.html
+Note: Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://lrberge.github.io/fixest/articles/standard_errors.html
 
 
 We can create a similar list as earlier. 
@@ -368,14 +414,16 @@ See more html display options here, https://cran.r-project.org/web/packages/kabl
 Now we can export this to latex
 
 ```{r fixest-export}
-modelsummary(models,  
+modelsummary(
+  models,  
   title = "Fantastic regression table", 
   stars = TRUE,
   gof_omit = "Adj|Pseudo|Log|AIC|BIC|F|R2", 
   coef_omit = c("(Intercept)"), 
   coef_rename = c("carat" = "Carat", 
                   "Num.Obs." = "N"), 
-  output = 'output/table.tex')
+  output = 'output/table.tex'
+  )
 ```
 
 #### Table using `etable`
@@ -405,14 +453,6 @@ A key feature of R is that you'll need to have packages installed and load them 
 
 `pacman` is a fantastically named package manager, it can handle both packages on CRAN and packages stored only on places like github. The `p_load` function will include the library if you have it and install it and include it if you do not. For this code chunk I have it set to not evaluate since we previously included many of these libraries.
 
-At the beginning of your R-script or `.Rmd` file, you can include something like this. 
-
-Make sure you have a place set to download packages from
-```{r}
-options(repos = c(RSPM = "https://packagemanager.rstudio.com/all/latest"))
-```
-
-Then run this code (modfidied for the packages you want)
 ```{r, eval = FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
@@ -486,7 +526,7 @@ shell /usr/local/bin/R --vanilla <test.R
 
 ### Clear memory
 
-Using  `rm(list = ls())` to clear the objects in memory (not loaded packages). As far as I know you need to restart R to clear out loaded packages, but I'm not 100% sure about this. 
+You can remove objects at any time using the `rm()` function. For example, `rm(base_model)` will remove our simple OLS model from earlier. To completely clear your memory and remove all objects, it's [best](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) to simply restart your R session. In RStudio, go to `Session > Restart R`. (Or use the keyboard shortcut: `Ctrl + Shift + F10`.)
 
 ### Reading and writing data
 
