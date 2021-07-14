@@ -114,7 +114,7 @@ diamonds |>
     summarize(mean(price)) 
 ```
 
-Note: In this example, `%>%` and `|>` are interchangeable, but the two are not interchangeable in all settings. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more details. 
+> **Note:** In this example, `%>%` and `|>` are interchangeable, but the two are not interchangeable in all settings. See https://www.r-bloggers.com/2021/05/the-new-r-pipe/ for more details. 
 
 #### Make summary statistics table. 
 
@@ -384,7 +384,7 @@ The fixed effects are those after the `|` symbol.
 fe_model = feols(price ~ carat + depth + table | color + cut + clarity, data = diamonds, cluster = ~color)
 ```
 
-Note: Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://lrberge.github.io/fixest/articles/standard_errors.html
+> **Aside:** Standard errors in `fixest` use a different DoF adjustment than `reghdfe` in stata. To make it comparable, you can set se options following this link: https://lrberge.github.io/fixest/articles/standard_errors.html
 
 
 We can create a similar list as earlier. 
@@ -442,7 +442,7 @@ etable(models_for_etable) %>%
     kable_styling(full_width = F)
 ```
 
-Note: See this excellent blog post by Patrick Baylis on how to "fine-tune" your tables using `etable` for latex export. It's quite simple to do, but will require a bit of time perfecting it to your exact liking. While it's outside the scope of this presentation, it's some hard earned knowledge he's sharing that should make your life easier. https://www.patrickbaylis.com/blog/2021-05-30-making-tables/
+> **Aside:** See this excellent blog post by Patrick Baylis on how to "fine-tune" your tables using `etable` for latex export. It's quite simple to do, but will require a bit of time perfecting it to your exact liking. While it's outside the scope of this presentation, it's some hard earned knowledge he's sharing that should make your life easier. https://www.patrickbaylis.com/blog/2021-05-30-making-tables/
 
 
 ## Package management
@@ -483,7 +483,7 @@ install_github("hemken/Statamarkdown")
 
 Load the package `Statamarkdown`, again not needed if using `pacman`.
 
-```{r setup-stata}
+```{r setup-stata, cache = FALSE}
 library("Statamarkdown")
 ```
 
@@ -498,13 +498,21 @@ summarize
 
 which will result in the following output. 
 
-```{stata, echo = FALSE}
+```{stata, echo = FALSE, cache = FALSE}
 sysuse auto
 summarize
 pwd
+
+scatter price mpg
+graph export "scatter.png", replace
 ```
 
-It's possible to do this without the `Statamarkdown` package, but I struggeled to get it to work, possibly because I have Stata-MP. You can see this link for more details:  https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html For more information on `Statamarkdown` see here: https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html
+You can then put these image in the RMarkdown document. 
+![scatter-from-stata](scatter.png)
+
+> **Note**: These are not default stata graph preferences. See (blindschemes)[https://ideas.repec.org/c/boc/bocode/s458251.html] with the suboption `plotplainblind` if you like these formatting. 
+
+> **Aside**: It's possible to do this without the `Statamarkdown` package, but I struggeled to get it to work, possibly because I have Stata-MP. You can see this link for more details:  https://bookdown.org/yihui/rmarkdown-cookbook/eng-stata.html For more information on `Statamarkdown` see here: https://www.ssc.wisc.edu/~hemken/Stataworkshops/Stata%20and%20R%20Markdown/StataEnginePath.html
 
 
 
@@ -518,7 +526,7 @@ shell /usr/local/bin/R --vanilla <test.R
 ```
 ````
 
-```{stata, echo = FALSE}
+```{stata, echo = FALSE, cache = FALSE}
 shell /usr/local/bin/R --vanilla <test.R
 ```
 
@@ -541,14 +549,53 @@ fwrite(diamonds, file = "data/diamonds.csv")
 
 `data.table` is **really** **really** good with big datasets.  Check out this walkthrough: https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
 
-- Reading and writing data in other formats is really easy with the `haven` package. This can also handle, wait for it, SAS datasets really easily. 
-
 ```{r save-diamonds-dta}
 library(haven)
 haven::write_dta(diamonds, path = "data/diamonds.dta", version = 14)
 ```
 
+> **Note**: Reading and writing data in other formats is really easy with the `haven` package. This can also handle, wait for it, SAS datasets really easily. 
+
 - You can read and write excel data with `readxl` package, which is a part of the `tidyverse`
+
+
+We can show that this worked by using the `Statamarkdown` package. 
+
+```{stata, cache = FALSE}
+// Use the csv file saved by fwrite in R
+import delimited data/diamonds.csv, clear
+
+twoway ///
+  || scatter price carat, ///
+  title("Bigger diamonds cost more- using fwrite to csv", pos(11)) ///
+  subtitle("Price", pos(11)) ///
+  ytitle("") ///
+  xtitle("Carat") ///
+  yla(,nogrid notick) ///
+  xla(,nogrid notick)
+  
+graph export "scatter-diamonds-using-csv.png", replace
+
+// Use the dta file saved by fwrite in R
+use data/diamonds.dta, clear
+
+twoway ///
+  || scatter price carat, ///
+  title("Bigger diamonds cost more- using write_dta to dta", pos(11)) ///
+  subtitle("Price", pos(11)) ///
+  ytitle("") ///
+  xtitle("Carat") ///
+  yla(,nogrid notick) ///
+  xla(,nogrid notick)
+
+graph export "scatter-diamonds-using-dta.png", replace
+```
+
+You can then put these image in the RMarkdown document. 
+
+![scatter-from-stata-csv](scatter-diamonds-using-csv.png)
+![scatter-from-stata-dta](scatter-diamonds-using-dta.png)
+
 
 ### Collapsing data
 
