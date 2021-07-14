@@ -1,0 +1,37 @@
+Package: Statamarkdown
+Type: Package
+Version: 0.6.1
+Date: 2021-05-06
+Title: 'Stata' Markdown
+Description: Settings and functions to extend the 'knitr' 'Stata' engine.
+Imports: knitr (>= 1.15), xfun (>= 0.4)
+SystemRequirements: Stata
+Authors@R: c(
+  person("Doug", "Hemken", email="dehemken@wisc.edu", 
+    role=c("aut", "cre"), comment="SSCC, Univ. of Wisconsin-Madison"),
+  person("Tom", "Palmer", role = "ctb", comment="MacOS"),
+  person("Philipp", "Lepert", role = "ctb")
+  )
+Maintainer: Doug Hemken <dehemken@wisc.edu>
+License: MIT + file LICENSE
+BugReports: http://github.com/Hemken/Statamarkdown/issues
+Encoding: UTF-8
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+Suggests: rmarkdown
+RemoteType: github
+RemoteHost: api.github.com
+RemoteRepo: Statamarkdown
+RemoteUsername: hemken
+RemoteRef: HEAD
+RemoteSha: 965bfe1a63222b85721c949f05c853fc851da5a1
+GithubRepo: Statamarkdown
+GithubUsername: hemken
+GithubRef: HEAD
+GithubSHA1: 965bfe1a63222b85721c949f05c853fc851da5a1
+NeedsCompilation: no
+Packaged: 2021-07-13 16:53:51 UTC; hollinal
+Author: Doug Hemken [aut, cre] (SSCC, Univ. of Wisconsin-Madison),
+  Tom Palmer [ctb] (MacOS),
+  Philipp Lepert [ctb]
+Built: R 4.1.0; ; 2021-07-13 16:53:51 UTC; unix
