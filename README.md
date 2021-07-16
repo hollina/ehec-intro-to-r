@@ -8,4 +8,6 @@ Alternatively, here are some shortcuts for viewing the presentations directly in
 
 1. [Orientation](https://raw.githack.com/hollina/ehec-intro-to-r/master/orientation/orientation.html). A short slide deck covering some basics and nice-to-knows before we dive into actual examples.
 
-2. [Intro notebook](https://raw.githack.com/hollina/ehec-intro-to-r/master/notes/introduction-slides.html). The main notebook, with a couple of worked examples (incl. data manipulation, graphing, and simple regressions)
+2. [Intro notebook](https://raw.githack.com/hollina/ehec-intro-to-r/master/notes/introduction-notes.html). The main notebook, with a couple of worked examples (incl. data manipulation, graphing, and simple regressions)
+
+3. [Intro slides](https://raw.githack.com/hollina/ehec-intro-to-r/master/notes/introduction-slides.html). The slides presented, which are a subset of the material from the main notebook. These mostly exist to provide an example of how to produce slides using R Markdown
