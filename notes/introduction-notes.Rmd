@@ -69,7 +69,13 @@ library(dplyr)
 
 ## View data
 
-Now that these pacakges are loaded into memory, we can begin to use them. In the code below, we'll explore the `diamonds` dataset that comes bundled with `ggplot2`. Much like Stata's auto dataset, many packages bundle pre-installed datasets that are useful for tutorials and debugging. 
+Now that these packages are loaded into memory, we can begin to use them. In the code below, we'll explore the `diamonds` dataset that comes bundled with `ggplot2`. Much like Stata's auto dataset, many packages bundle pre-installed datasets that are useful for tutorials and debugging. 
+
+The `diamonds` dataset is already available to us, since we've loaded `ggplot2` into memory. But let's bring it visibly into our global Environment (top right-hand pane in RStudio). This would happen automatically if we read in an external file like a .csv or .dta. We'll get to external file I/O later, though. 
+
+```{r data-diamonds, eval = FALSE}
+data("diamonds")
+```
 
 We can look at the first five observations using the `head` command
 
@@ -83,7 +89,7 @@ We can get a list of column names fairly easily too
 names(diamonds)
 ```
 
-> Tip: You can bring the how dataset into view (similar to Stata's browse feature) by typing `View(diamonds)`. 
+> Tip: You can bring the dataset into view (similar to Stata's browse feature) by typing `View(diamonds)`, or just by clicking on it in your Environment pane. 
 
 Let's compute the average price by color. The next code chunk is using `dplyr` commands ("verbs") and invokes a "pipe" (the `%>%` syntax) to write cleaner code.
 
