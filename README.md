@@ -1,6 +1,6 @@
 # EHEC, Introduction to R
 
-Slides, notes, and other materials from an [Introduction to R workshop](https://www.youtube.com/watch?v=_9nxVzEV2Nw). Presented by Alex Hollingsworth, Grant McDermott, and Kelli Marquard for the Electronic Health Economics Colloquium (EHEC).
+Slides, notes, and other materials from an [Introduction to R workshop](https://www.youtube.com/watch?v=_9nxVzEV2Nw). Presented by Alex Hollingsworth, Grant McDermott, and Kelli Marquardt for the Electronic Health Economics Colloquium (EHEC).
 
 You can download (clone) all of the material to your local computer by hitting the green "Clone" button above.
 
